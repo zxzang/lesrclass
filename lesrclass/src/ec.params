@@ -1,0 +1,63 @@
+# totally verbose
+verbosity = 				0
+
+# one thread
+evalthreads = 				1
+breedthreads = 				1
+
+# a good random seed for thread 
+seed.0 = 				1399
+ 
+# ec.EvolutionState
+# ==============================
+
+# We're not writing checkpoint files.  If we were, we'd do it every
+# generation, and the prefix to all the files would be "ec.*"
+checkpoint =				false
+checkpoint-modulo =        	1 
+prefix = 					ec
+
+
+pop		= ec.Population
+init		= ec.simple.SimpleInitializer
+finish		= ec.simple.SimpleFinisher
+breed		= ec.simple.SimpleBreeder
+eval		= ec.simple.SimpleEvaluator
+stat		= ec.simple.SimpleStatistics
+exch		= ec.simple.SimpleExchanger
+
+
+generations		= 500
+quit-on-run-complete	= true
+checkpoint		= false
+prefix			= ec
+checkpoint-modulo	= 1
+
+
+state		= ec.simple.SimpleEvolutionState
+pop.subpops		= 1
+pop.subpop.0		= ec.Subpopulation 
+
+pop.subpop.0.size 		= 100
+pop.subpop.0.duplicate-retries 	= 0
+pop.subpop.0.species 		= ec.vector.VectorSpecies
+pop.subpop.0.species.ind	= ec.vector.BitVectorIndividual
+
+pop.subpop.0.species.genome-size	= 500	
+pop.subpop.0.species.crossover-type	= one
+pop.subpop.0.species.crossover-prob	= 1.0
+pop.subpop.0.species.mutation-prob	= 0.001
+
+pop.subpop.0.species.fitness 		= ec.simple.SimpleFitness
+ 
+pop.subpop.0.species.pipe			= ec.vector.breed.VectorMutationPipeline
+pop.subpop.0.species.pipe.source.0		= ec.vector.breed.VectorCrossoverPipeline
+pop.subpop.0.species.pipe.source.0.source.0	= ec.select.TournamentSelection
+pop.subpop.0.species.pipe.source.0.source.1	= ec.select.TournamentSelection
+
+pop.subpop.0.species.pipe.source.0.source.0.size	= 2
+pop.subpop.0.species.pipe.source.0.source.1.size	= 2
+
+select.tournament.size		= 40
+
+eval.problem		= LESRClass.Fitness
