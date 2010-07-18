@@ -11,7 +11,6 @@ import javax.swing.*;
 public class Fitness extends Problem implements SimpleProblemForm{
 	private static final long serialVersionUID = 1L;
 
-	@Override
 	public void describe(Individual ind, EvolutionState state,
 			int subpopulation, int threadnum, int log, int verbosity) {
 	}
