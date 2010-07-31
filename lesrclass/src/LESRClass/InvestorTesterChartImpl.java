@@ -38,7 +38,7 @@ public class InvestorTesterChartImpl implements InvestorTester {
 		fileName = "sp62-10Split.prn";
 		stockName = "SP500";
 		stock = new Stock(stockName,0);
-		outChart = new TimeSeriesChart("c:\\users\\john\\documents\\CS499\\output\\SP500Chart.png"); 
+		outChart = new TimeSeriesChart("./Data/SP500Chart.png"); 
 		hist = new PriceData(stockName, fileName);
 	}
 	
