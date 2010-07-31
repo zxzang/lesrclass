@@ -2,7 +2,7 @@ package LESRClass;
 import javax.swing.JOptionPane;
 
 import org.jfree.util.Log;
-
+import LESRData.SplitData;
 import java.util.*;
 
 import ec.*;
@@ -16,9 +16,9 @@ public class LESRClass {
 	public static void main(String[] args) {
 	
 //Do a run with the GA		
-		Evolve test = new Evolve();
-		System.out.println("yo");
-		test.main(args); 
+//		Evolve test = new Evolve();
+//		System.out.println("yo");
+//		test.main(args); 
 
 //		String genome = " 0 0 0 1 1 0 0 0 0 0 1 0 0 1 1 1 1 1 0 1 1 0 0 1 1 0 0 1 1 0 1 1 0 1 1 0 0 1 1 0 0 0 0 1 0 0 0 0 1 1 1 0 1 1 1 0 1 0 1 0 1 1 1 0 0 0 0 0 0 0 0 1 1 1 1 0 0 0 0 1 1 1 0 0 1 1 0 0 0 0 1 0 0 0 1 1 0 0 0 1 1 0 0 1 0 1 1 1 1 1 0 0 1 1 1 1 1 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0 1 0 1 1 0 1 0 0 0 1 0 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 1 1 0 0 1 0 1 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 0 1 1 1 0 1 1 0 0 1 1 0 0 0 1 1 1 0 1 0 1 0 0 1 1 0 0 0 1 0 0 1 0 1 0 1 0 1 0 0 0 1 1 1 0 1 0 0 1 1 1 0 0 0 0 1 1 1 0 1 1 0 0 1 0 0 0 1 0 1 0 0 0 0 1 1 0 1 1 1 0 0 0 0 1 1 1 1 0 1 1 1 1 0 1 1 1 0 1 0 0 0 0 0 0 0 0 0 0 1 0 0 1 0 0 1 0 1 1 1 1 0 1 1 0 0 0 0 0 0 0 0 1 0 0 1 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 0 0 1 0 1 1 1 1 0 1 1 1 1 1 0 0 0 0 1 0 1 0 0 1 1 0 1 1 1 0 0 0 1 0 1 0 1 0 0 1 1 0 0 0 0 0 1 0 1 0 1 0 1 0 0 0 0 0 0 0 1 1 0 1";
 
@@ -35,7 +35,7 @@ public class LESRClass {
 
 //		runOneGenomeWithBitString(stringRemoveSpaces(genome));
 // split the data into training and test		
-//		SplitData hist = new SplitData("Data", 12182, "table62to10.prn");
+		SplitData hist = new SplitData("Data", 12182, "table62to10.prn");
 
 	}
 
