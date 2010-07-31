@@ -41,7 +41,7 @@ public class PriceData {
 			lastFiftyVolume = new Double[50];
 			
 			yesterdaysClose = 0.00;
-			fullPathName = "c:\\users\\john\\documents\\cs499\\pricedata\\" + fileName; 
+			fullPathName = "/lesrclass/histdata/" + fileName; 
 			
 			try{
 
