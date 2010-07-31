@@ -27,7 +27,7 @@ public class SplitData {
 //		System.out.println(sizeIn + " SD line 26");
 		
 	
-		fullPathName = "c:\\users\\john\\documents\\CS499\\pricedata\\" + fileName; 
+		fullPathName = "/lesrclass/histdata/" + fileName; 
 		
 		allocation = new AllocationPoint[sizeIn];
 	
@@ -113,7 +113,7 @@ public class SplitData {
 		} // end catch
 		
 		try{
-			dataOut.outputToFile("c:\\Users\\John\\documents\\CS499\\priceData\\SP62-10Split.prn");
+			dataOut.outputToFile("/lesrclass/histdata/SP62-10Split.prn");
 			
 		}catch(Exception ex) {System.out.println("SD 119" + ex.toString());
 		}
