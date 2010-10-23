@@ -55,7 +55,7 @@ public class PriceData {
 
 // skip header line
 				input.nextLine();
-				counter +=1;
+//				counter +=1;
 				do{
 					
 					DayInfo today = new DayInfo();
@@ -216,6 +216,7 @@ public class PriceData {
 	}
 	
 	public double getAdjClose(int tick){
+		if(tick >= theData.length) JOptionPane.showMessageDialog(null, "tick too high: " + tick);
 		return theData[tick].getClose();		
 	}
 	
@@ -268,6 +269,10 @@ public class PriceData {
 
 	public int getYesterdaysVolume(int ticknum){
 		return theData[ticknum].getYesterdaysVolume();
+	}	
+	
+	public double getYesterdaysClose(int ticknum){
+		return yesterdaysClose;
 	}	
 
 	

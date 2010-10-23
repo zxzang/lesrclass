@@ -139,7 +139,7 @@ public class DayInfo {
 		return date;		
 	}
 	
-	public void setMaFifty(Double maFiftyIn){
+	public void setMaFifty(double maFiftyIn){
 		maFifty = maFiftyIn;		
 		}
 	
@@ -148,7 +148,7 @@ public class DayInfo {
 		}
 
 	
-	public void setMaTen(Double maTenIn){
+	public void setMaTen(double maTenIn){
 		maTen = maTenIn;		
 		}
 	
@@ -157,7 +157,7 @@ public class DayInfo {
 		}
 	
 	
-	public void setMaTwoHundred(Double maTwoHundredIn){
+	public void setMaTwoHundred(double maTwoHundredIn){
 		maTwoHundred = maTwoHundredIn;		
 		}
 		
