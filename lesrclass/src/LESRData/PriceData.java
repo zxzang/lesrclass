@@ -216,7 +216,11 @@ public class PriceData {
 	}
 	
 	public double getAdjClose(int tick){
-		if(tick >= theData.length) JOptionPane.showMessageDialog(null, "tick too high: " + tick);
+		if((Integer) tick ==null) JOptionPane.showMessageDialog(null, "null tick");
+		if(theData[tick]==null){
+			JOptionPane.showMessageDialog(null, "null value at tick" + tick);
+			return 0;
+		}
 		return theData[tick].getClose();		
 	}
 	

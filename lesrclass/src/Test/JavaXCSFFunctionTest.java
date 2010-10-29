@@ -78,13 +78,13 @@ public class JavaXCSFFunctionTest {
 //		xcsf.addListener(new ConditionsGUI2D3D());
 		xcsf.addListener(new OutputWriter2D("",false,0,1,1));
 		xcsf.addListener(new PopulationWriter(null));
-		try {
+/*		try {
 			xcsf.addListener(new PlotTest());
 		} catch (IOException e) {
 			
 			e.printStackTrace();
 		} 
-	
+*/	
 		xcsf.runExperiments();
 	}
 	
