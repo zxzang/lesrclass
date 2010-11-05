@@ -349,6 +349,7 @@ public class PriceData {
 				input.nextLine();
 			} // end while
 
+			length -= 1;
 			input.close();
 			}
 			catch(Exception ex){}

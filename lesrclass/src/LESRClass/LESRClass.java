@@ -17,7 +17,6 @@ public class LESRClass {
 	
 //Do a run with the GA		
 //		Evolve test = new Evolve();
-//		System.out.println("yo");
 //		test.main(args); 
 
 //		String genome = " 0 0 0 1 1 0 0 0 0 0 1 0 0 1 1 1 1 1 0 1 1 0 0 1 1 0 0 1 1 0 1 1 0 1 1 0 0 1 1 0 0 0 0 1 0 0 0 0 1 1 1 0 1 1 1 0 1 0 1 0 1 1 1 0 0 0 0 0 0 0 0 1 1 1 1 0 0 0 0 1 1 1 0 0 1 1 0 0 0 0 1 0 0 0 1 1 0 0 0 1 1 0 0 1 0 1 1 1 1 1 0 0 1 1 1 1 1 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0 1 0 1 1 0 1 0 0 0 1 0 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 1 1 0 0 1 0 1 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 0 1 1 1 0 1 1 0 0 1 1 0 0 0 1 1 1 0 1 0 1 0 0 1 1 0 0 0 1 0 0 1 0 1 0 1 0 1 0 0 0 1 1 1 0 1 0 0 1 1 1 0 0 0 0 1 1 1 0 1 1 0 0 1 0 0 0 1 0 1 0 0 0 0 1 1 0 1 1 1 0 0 0 0 1 1 1 1 0 1 1 1 1 0 1 1 1 0 1 0 0 0 0 0 0 0 0 0 0 1 0 0 1 0 0 1 0 1 1 1 1 0 1 1 0 0 0 0 0 0 0 0 1 0 0 1 0 1 0 0 1 0 1 1 0 1 1 0 0 1 0 0 1 0 0 0 1 0 1 1 1 1 0 1 1 1 1 1 0 0 0 0 1 0 1 0 0 1 1 0 1 1 1 0 0 0 1 0 1 0 1 0 0 1 1 0 0 0 0 0 1 0 1 0 1 0 1 0 0 0 0 0 0 0 1 1 0 1";
@@ -78,7 +77,7 @@ public class LESRClass {
 		String stringGenome = stringRemoveSpaces(sGenomeIn);
 		boolean[] genome = convert(stringGenome);
 		
-		RuleSet rs = new RuleSet(genome);
+		RuleSet rs = new RuleSetGAImpl(genome);
 		rs.showRules();
 }
 

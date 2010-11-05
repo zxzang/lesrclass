@@ -38,7 +38,7 @@ public class InvestorTesterNoChartImpl implements InvestorTester{
 	
 	public double test(boolean[] genomeIn, String trainOrTest) {
 		genome = genomeIn;
-		rules = new RuleSet(genomeIn);
+		rules = new RuleSetGAImpl(genomeIn);
 		double fitness = runSet(trainOrTest);
 				
 		if(trainOrTest == "train" && (fitness > 500))  {
@@ -60,7 +60,7 @@ public class InvestorTesterNoChartImpl implements InvestorTester{
 
 	private double runSet(String trainOrTest){
 		TimeTick today = new TimeTick();
-		Rule.RecType rec = Rule.RecType.DONOTHING;
+		RuleGAImpl.RecType rec = RuleGAImpl.RecType.DONOTHING;
 		double fitness = 1;
 		int datasetCount = 0;
 
@@ -84,7 +84,7 @@ public class InvestorTesterNoChartImpl implements InvestorTester{
 		return fitness;
 	}
 	
-	public double evalPrediction(PriceData hist, int tick, Rule.RecType rec){
+	public double evalPrediction(PriceData hist, int tick, RuleGAImpl.RecType rec){
 		double today = hist.getAdjClose(tick);
 		double yesterday = hist.getAdjClose(tick-1);
 		double returnVal = 1;
@@ -93,8 +93,8 @@ public class InvestorTesterNoChartImpl implements InvestorTester{
 			((today - yesterday) / yesterday) + 1;
 			
 		returnVal = changeVal;
-		if(rec == Rule.RecType.SHORT) returnVal = 1/returnVal;
-		if(rec == Rule.RecType.DONOTHING) returnVal = 1;
+		if(rec == RuleGAImpl.RecType.SHORT) returnVal = 1/returnVal;
+		if(rec == RuleGAImpl.RecType.DONOTHING) returnVal = 1;
 		
 //		double changeTrigger = Math.abs(1-returnVal);
 
@@ -131,17 +131,17 @@ public class InvestorTesterNoChartImpl implements InvestorTester{
 	
 	}
 	
-	public boolean checkPrediction(String lastTick, Rule.RecType lastRec){
+	public boolean checkPrediction(String lastTick, RuleGAImpl.RecType lastRec){
 		boolean goodPrediction = false;
-		if(lastRec == Rule.RecType.DONOTHING){
+		if(lastRec == RuleGAImpl.RecType.DONOTHING){
 			if(lastTick == "flat")goodPrediction = true;			
 		}
 		
-		else if(lastRec ==Rule.RecType.LONG){
+		else if(lastRec ==RuleGAImpl.RecType.LONG){
 			if(lastTick == "up")goodPrediction = true;			
 		}
 		
-		else if(lastRec == Rule.RecType.SHORT){
+		else if(lastRec == RuleGAImpl.RecType.SHORT){
 			if(lastTick == "down") goodPrediction = true;			
 		}
 		else System.out.println("Mismatch in checkPrediction");
