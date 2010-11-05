@@ -16,7 +16,7 @@ import xcsf.listener.OutputWriter2D;
 import xcsf.listener.PerformanceGUI;
 import xcsf.listener.PopulationWriter;
 import xcsf.listener.PredictionPlot;
-
+import xcsfExtensions.*;
 
 public class JavaXCSFFunctionTest {
 
@@ -70,13 +70,13 @@ public class JavaXCSFFunctionTest {
 	
 	@Test
 	public void testPriceFunction() {
-		Function f = new PriceFunction(1, 0, 0, 2);
+		Function f = new PriceFunction(1, 0, 0, 1);
 		
 		XCSFConstants.load("xcsf.ini");
 		XCSF xcsf = new XCSF(f);
 //		xcsf.addListener(new PerformanceGUI(true));
 //		xcsf.addListener(new ConditionsGUI2D3D());
-		xcsf.addListener(new OutputWriter2D("",false,0,1,1));
+//		xcsf.addListener(new OutputWriter2D("",false,0,1,1));
 		xcsf.addListener(new PopulationWriter(null));
 /*		try {
 			xcsf.addListener(new PlotTest());
@@ -84,8 +84,9 @@ public class JavaXCSFFunctionTest {
 			
 			e.printStackTrace();
 		} 
-*/	
+	*/
 		xcsf.runExperiments();
+	
 	}
 	
 

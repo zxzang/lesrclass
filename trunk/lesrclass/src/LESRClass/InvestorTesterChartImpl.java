@@ -50,7 +50,7 @@ public class InvestorTesterChartImpl implements InvestorTester {
 	
 	public double test(boolean[] genomeIn) {
 		genome = genomeIn;
-		RuleSet rules = new RuleSet(genomeIn);
+		RuleSet rules = new RuleSetGAImpl(genomeIn);
 		List <TimeSeries> seriesList = runGenome(genomeIn);
 		chart(seriesList);
 		return 0.00;
@@ -67,14 +67,14 @@ public class InvestorTesterChartImpl implements InvestorTester {
 	private List<TimeSeries> runGenome(boolean[] genomeIn){
 		List<TimeSeries> seriesList = new ArrayList<TimeSeries>();
 
-		RuleSet strategyRules = new RuleSet(genomeIn);
+		RuleSet strategyRules = new RuleSetGAImpl(genomeIn);
 		String trainSeriesName = "Apply Strategy on Training Data";
 		String testSeriesName = "Apply Strategy on Test Data";
 		TimeSeries trainSeries = outChart.createSeries(trainSeriesName);
 		TimeSeries testSeries = outChart.createSeries(testSeriesName);
 			
 		boolean[] buyHoldGenome = convert("0001000111101111");
-		RuleSet buyHoldRules = new RuleSet(buyHoldGenome);
+		RuleSet buyHoldRules = new RuleSetGAImpl(buyHoldGenome);
 		String buyHoldTrainSeriesName = "Buy and Hold, Training Data";
 		String buyHoldTestSeriesName = "Buy and Hold, Test Data";
 		TimeSeries buyHoldTrainSeries = outChart.createSeries(buyHoldTrainSeriesName);
@@ -99,7 +99,7 @@ public class InvestorTesterChartImpl implements InvestorTester {
 		TimeTick today = new TimeTick();
 		String lastTick = stock.getLastTick();
 
-		Rule.RecType rec = Rule.RecType.DONOTHING;
+		RuleGAImpl.RecType rec = RuleGAImpl.RecType.DONOTHING;
 		
 		int datasetCount = 0;
 		
@@ -127,7 +127,7 @@ public class InvestorTesterChartImpl implements InvestorTester {
 	}
 		
 	
-	public double evalPrediction(PriceData hist, int tick, Rule.RecType rec){
+	public double evalPrediction(PriceData hist, int tick, RuleGAImpl.RecType rec){
 		double today = hist.getAdjClose(tick);
 		double yesterday = hist.getAdjClose(tick-1);
 		double returnVal = 1;
@@ -136,8 +136,8 @@ public class InvestorTesterChartImpl implements InvestorTester {
 			((today - yesterday) / yesterday) + 1;
 			
 		returnVal = changeVal;
-		if(rec == Rule.RecType.SHORT) returnVal = 1/returnVal;
-		if(rec == Rule.RecType.DONOTHING) returnVal = 1;
+		if(rec == RuleGAImpl.RecType.SHORT) returnVal = 1/returnVal;
+		if(rec == RuleGAImpl.RecType.DONOTHING) returnVal = 1;
 		
 		return returnVal;
 	}
@@ -169,17 +169,17 @@ public class InvestorTesterChartImpl implements InvestorTester {
 	
 	}
 	
-	public boolean checkPrediction(String lastTick, Rule.RecType lastRec){
+	public boolean checkPrediction(String lastTick, RuleGAImpl.RecType lastRec){
 		boolean goodPrediction = false;
-		if(lastRec == Rule.RecType.DONOTHING){
+		if(lastRec == RuleGAImpl.RecType.DONOTHING){
 			if(lastTick == "flat")goodPrediction = true;			
 		}
 		
-		else if(lastRec ==Rule.RecType.LONG){
+		else if(lastRec ==RuleGAImpl.RecType.LONG){
 			if(lastTick == "up")goodPrediction = true;			
 		}
 		
-		else if(lastRec == Rule.RecType.SHORT){
+		else if(lastRec == RuleGAImpl.RecType.SHORT){
 			if(lastTick == "down") goodPrediction = true;			
 		}
 		else System.out.println("Mismatch in checkPrediction");
