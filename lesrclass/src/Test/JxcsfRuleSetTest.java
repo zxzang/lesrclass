@@ -22,19 +22,30 @@ public class JxcsfRuleSetTest {
 	public void setUp() throws Exception {
 	}
 
+	@Ignore
 	@Test
 	public void testMakeRules(){
 		FunctionApproxToRules rulemaker = new XcsfRlsFunctionApproxToRulesImpl();
 		
 		double[] outputs = {100.0};
-		for(int a = 70; a < 99; a++)
-			for(int b = 70; b < 99; b++)
-				for(int c = 70; c < 99; c++){
+		int min = 97;
+		int max = 103;
+		for(int a = min; a < (max + 1); a++)
+			for(int b = min; b < (max + 1); b++)
+				for(int c = min; c < (max + 1); c++){
 					double[] inputs = {a, b, c};
 					rulemaker.parseRulesFromPopulation(inputs, outputs);
 				}
 		assertNotNull(rulemaker.getRuleset());
+			
+	}
 	
+	@Test
+	public void testRules(){
+		FunctionApproxToRules rulemaker = new XcsfRlsFunctionApproxToRulesImpl();
+		
+		
+		
 		
 	}
 	
