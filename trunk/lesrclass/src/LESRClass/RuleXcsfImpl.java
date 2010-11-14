@@ -1,105 +1,42 @@
 package LESRClass;
 
-import LESRClass.RuleGAImpl.RecType;
-import LESRData.Stock;
-import java.util.List;
-import java.util.ArrayList;
+import xcsf.StateDescriptor;
+import xcsf.classifier.Classifier;
+import xcsf.classifier.Prediction;
 
-public class RuleXcsfImpl implements Rule {
+
+public class RuleXcsfImpl extends Rule {
 	RecType recommendation;
 	double weight;	
-	List<Boolean> tests;
-	List<Double> inputs;
-	List<Double> coefficients;
-	double prediction;
 	double threshold;
-
+	Classifier classifier;
 		
 	public RuleXcsfImpl(double thresholdIn){
-		tests = new ArrayList<Boolean>();
-		inputs = new ArrayList<Double>();
-		coefficients = new ArrayList<Double>();
 		threshold = thresholdIn;
 	}
+
+	public RuleXcsfImpl(Classifier classifier){
+		this.classifier = classifier;
+		threshold = 0;
+	}
+
+	public Classifier getClassifier(){return classifier;}
 	
 
-	public RuleGAImpl.RecType evalRule(List<Double> inputsIn, List<Double> coefficientsIn){
-		this.inputs = inputsIn;
-		boolean allTestsTrue = true;  // to be checked by iterating through the array 
+	public RecType getRecommendation(StateDescriptor state){
+		classifier.predict(state);
+		Prediction prediction = classifier.getPrediction();
+		double[] predChange = prediction.predict(state.getPredictionInput());
 	
-		
-		for(boolean test: tests){
-			if(test == false) allTestsTrue = false;
-		}
-	
-		if (allTestsTrue){
-		
-			if(prediction > (1+ threshold)) goLong();
-			else if(prediction < (1-threshold)) goShort();
-			else doNothing();
-		}
-
+		for(double pred: predChange) System.out.println("prediction: " + pred);
+		if(predChange[0] > (100+ threshold)) goLong();
+		else if(predChange[0] < (100-threshold)) goShort();
 		else doNothing();
-
+		
 		return recommendation;
 	}
 	
-/*	
-	@Override
-	public void setTests(Double varA, Double varB, int n, boolean same)	{
 
-//		double changeIncrement = 15;
-		if(same) tests[n] = true;
-		// always pass if we are comparing two copies of the same variable		
-		
-		else {
-			if(varA <= varB) tests[n] = true;
-			else tests[n] = false;
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see LESRClass.Rule#toString()
-	 */
-	/*
-	@Override
-	public String toString(){
-
-		for(int i: intGenome) System.out.print(i+ " ");
-		System.out.println();
-		StringBuilder sb = new StringBuilder();
-
-		int a = 0, b = 0;
-		for(int testNum = 0; testNum < tests.length; testNum++){
-			a = testNum * 2;
-			b = a + 1;
-
-			if(testNum > 0) System.out.print(" AND ");
-			else if (tests.length > 0) System.out.print("IF ");
-			System.out.print("(" + Stock.getSmaName(intGenome[a]) + " <= " + Stock.getSmaName(intGenome[b]) +")");
-		}
-
-		if(tests.length>0) System.out.print("\nTHEN ");
-		if(intGenome[intGenome.length-2] == 14) System.out.print("go long");
-		else if (intGenome[intGenome.length-2] == 15) System.out.print("go short");	
-		System.out.print(". Weight: " + weight);
-		System.out.println();
-		
-		return sb.toString();
-	}
-
-	public void setIntGenomePosition(int posIn, int numIn){
-		intGenome[posIn] = numIn;		
-	} 
-	
-	@Override
-	public int getWeight() {
-		return weight;
-	}
-
-	/* (non-Javadoc)
-	 * @see LESRClass.Rule#setWeight(int)
-	 */
 	@Override
 	public void setWeight(int weight) {
 		this.weight = weight;
@@ -173,6 +110,12 @@ public class RuleXcsfImpl implements Rule {
 	public int getWeight() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 
