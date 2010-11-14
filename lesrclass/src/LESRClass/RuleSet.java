@@ -2,7 +2,6 @@ package LESRClass;
 
 import java.util.List;
 
-import LESRClass.RuleGAImpl.RecType;
 
 public interface RuleSet {
 
@@ -10,6 +9,8 @@ public interface RuleSet {
 
 	public abstract RuleGAImpl.RecType getRecommendation(Double[] SMAsIn,
 			String lastTick);
+
+	Rule.RecType getRecommendation(double[] inputs, double[] outputs);
 
 	
 }

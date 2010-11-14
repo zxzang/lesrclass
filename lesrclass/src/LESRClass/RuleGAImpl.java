@@ -2,11 +2,14 @@ package LESRClass;
 
 import javax.swing.JOptionPane;
 
+import xcsf.StateDescriptor;
+import xcsf.classifier.Classifier;
+
 import LESRData.Stock;
 
-public class RuleGAImpl implements Rule {
+public class RuleGAImpl extends Rule {
 
-	public enum RecType{LONG, SHORT, DONOTHING}
+	
 	RecType recommendation;
 	int[] intGenome;
 	Double[] SMAs;
@@ -24,7 +27,7 @@ public class RuleGAImpl implements Rule {
 	 * @see LESRClass.Rule#evalRule(java.lang.Double[], java.lang.String)
 	 */
 	@Override
-	public RecType evalRule(Double[] SMAsIn, String lastTick){
+	public Rule.RecType evalRule(Double[] SMAsIn, String lastTick){
 		this.SMAs = SMAsIn;
 		boolean allTestsTrue = true;  // to be checked by iterating through the array 
 
@@ -167,5 +170,17 @@ public class RuleGAImpl implements Rule {
 	
 	public void setRecommendation(RecType recommendation) {
 		this.recommendation = recommendation;
+	}
+
+	@Override
+	public Classifier getClassifier() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public RecType getRecommendation(StateDescriptor state) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

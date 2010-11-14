@@ -1,6 +1,8 @@
 package LESRClass;
 import java.util.*;
 
+import LESRClass.Rule.RecType;
+
 public class RuleSetGAImpl implements RuleSet {
 	private ArrayList<RuleGAImpl> rules;
 	private ArrayList<RuleGAImpl.RecType> ruleRecommendations;
@@ -188,5 +190,11 @@ public class RuleSetGAImpl implements RuleSet {
 		}
 		System.out.println();
 		
+	}
+
+	@Override
+	public RecType getRecommendation(double[] inputs, double[] outputs) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
