@@ -26,9 +26,18 @@ public class RuleXcsfImpl extends Rule {
 	public RecType getRecommendation(StateDescriptor state){
 		classifier.predict(state);
 		Prediction prediction = classifier.getPrediction();
-		double[] predChange = prediction.predict(state.getPredictionInput());
+		double[] input = state.getPredictionInput();
+/*		System.out.println("getting prediction for input: ");
+		for(double d: input) System.out.print(d + " ");
+	*/	
+		 
+		double[] centeredInput = state.getPredictionInput();
+		for(int i = 0; i < centeredInput.length; i++)
+			centeredInput[i] -= classifier.getCondition().getCenter()[i];
+		
+		double[] predChange = prediction.predict(centeredInput);
 	
-		for(double pred: predChange) System.out.println("prediction: " + pred);
+//		for(double pred: predChange) System.out.println("prediction: " + pred);
 		if(predChange[0] > (100+ threshold)) goLong();
 		else if(predChange[0] < (100-threshold)) goShort();
 		else doNothing();

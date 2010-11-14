@@ -53,7 +53,7 @@ public class PriceFunction extends SimpleFunction {
 			value = (hist.getAdjClose(currtick + 1))/(hist.getAdjClose(currtick))* 100;
 		else value = 100.0;
 	
-		value = input[0];
+		
 //		System.out.println("Tick: " + currtick + " input: " + input[0] + 
 //				" output: " + value);
 		

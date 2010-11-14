@@ -47,14 +47,9 @@ public class RuleSetXCSFImpl implements RuleSet {
 		List<RecType> recs = new ArrayList<RecType>();
 		StateDescriptor state = new StateDescriptor(inputs, outputs);
 		
+		System.out.print("\nnew input: ");
+		for(double d: inputs) System.out.print(d + " ");
 		for (Rule rule:rules) {
-			System.out.println("\n\nNew Classifier.  Condition center: ");
-			for(double d: rule.getClassifier().getCondition().getCenter())
-				System.out.print(" " + d);
-			System.out.println("volume: " + rule.getClassifier().getCondition().getVolume());
-			System.out.println("match? " + rule.getClassifier().doesMatch(state));
-			
-			
 			if(rule.getClassifier().doesMatch(state)){
 				
 				recs.add(rule.getRecommendation(state));
@@ -62,7 +57,7 @@ public class RuleSetXCSFImpl implements RuleSet {
 		}
 		
 		for(RecType rec: recs){
-			System.out.println(rec.toString());
+//			System.out.println(rec.toString());
 			if(rec == RecType.LONG) totalRec += 1;
 			else if(rec == RecType.SHORT) totalRec -= 1;
 		}

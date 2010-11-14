@@ -43,7 +43,7 @@ public class LESRClass {
 		InvestorTester it = new InvestorTesterChartImpl();
 //		InvestorTester it = new InvestorTesterNoChartImpl();
 		
-		it.test(genome);
+//		it.test(genome);
 	}
 	
 	private static void runOneGenome(boolean[] genome){

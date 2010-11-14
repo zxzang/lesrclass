@@ -96,9 +96,6 @@ public class XcsfRlsFunctionApproxToRulesImpl implements FunctionApproxToRules {
 	public void parseRulesFromPopulation(double[] inputs, double[] outputs) {
 		ruleset = new RuleSetXCSFImpl(pop);
 		RecType rec = ruleset.getRecommendation(inputs, outputs);
-		System.out.print( "recommendation for ");
-		for(int i = 0; i < inputs.length;i++) System.out.print (" " + inputs[i]);
-		System.out.print (" is " + rec.toString());	
 		
 		
 	}
