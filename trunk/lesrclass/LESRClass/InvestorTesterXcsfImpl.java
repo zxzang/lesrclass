@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.jfree.data.time.TimeSeries;
 
-import rules.RuleGAImpl;
+import rules.Rule;
 import rules.RuleSet;
 import rules.RuleSetBuyHold;
 import rules.RuleSetDoNothing;
@@ -40,6 +40,10 @@ public class InvestorTesterXcsfImpl implements InvestorTester {
 		this.ig = ig;
 	}
 
+	/* (non-Javadoc)
+	 * @see LESRClass.InvestorTester#test(rules.RuleSet)
+	 */
+	@Override
 	public void test(RuleSet ruleSetIn) {
 		this.ruleset = ruleSetIn;
 		List<TimeSeries> seriesList = runRuleSet();
@@ -111,7 +115,11 @@ public class InvestorTesterXcsfImpl implements InvestorTester {
 		return seriesList;
 	}
 	
-	public double evalPrediction(PriceData hist, int tick, RuleGAImpl.RecType rec){
+	/* (non-Javadoc)
+	 * @see LESRClass.InvestorTester#evalPrediction(LESRData.PriceData, int, rules.Rule.RecType)
+	 */
+	@Override
+	public double evalPrediction(PriceData hist, int tick, Rule.RecType rec){
 		
 		double tomorrow = (tick < (hist.getLength()-1))? hist.getAdjClose(tick+1): hist.getAdjClose(tick);
 		double today = hist.getAdjClose(tick);
@@ -119,8 +127,8 @@ public class InvestorTesterXcsfImpl implements InvestorTester {
 		
 		returnVal = tomorrow / today;
 			
-		if(rec == RuleGAImpl.RecType.SHORT) returnVal = 1/returnVal;
-		if(rec == RuleGAImpl.RecType.DONOTHING) returnVal = 1.00;
+		if(rec == Rule.RecType.SHORT) returnVal = 1/returnVal;
+		if(rec == Rule.RecType.DONOTHING) returnVal = 1.00;
 
 /*		if(tick%100 ==0) System.out.println(tick+ " today:" + 
 				today + " tomorrow:" + tomorrow + "return: " + returnVal);
@@ -140,7 +148,7 @@ public class InvestorTesterXcsfImpl implements InvestorTester {
 		double inputs[];
 		double outputs[] = new double[1];
 		
-		RuleGAImpl.RecType rec = RuleGAImpl.RecType.DONOTHING;
+		Rule.RecType rec = Rule.RecType.DONOTHING;
 
 		int datasetCount = 0;
 
@@ -201,10 +209,5 @@ public class InvestorTesterXcsfImpl implements InvestorTester {
 		stock.setTrainTest(hist.getTrainTest(tickCounter));
 	}
 
-	@Override
-	public double test(boolean[] boolArray) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
+	
 }

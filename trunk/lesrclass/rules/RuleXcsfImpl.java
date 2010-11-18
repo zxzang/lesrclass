@@ -86,7 +86,7 @@ public class RuleXcsfImpl extends Rule {
 	/* (non-Javadoc)
 	 * @see LESRClass.Rule#setRecommendation(LESRClass.GARuleImpl.RecType)
 	 */
-	public void setRecommendation(RuleGAImpl.RecType recommendation) {
+	public void setRecommendation(Rule.RecType recommendation) {
 		this.recommendation = recommendation;
 	}
 

@@ -23,6 +23,7 @@ import xcsf.XCSF;
 import xcsf.XCSFConstants;
 import xcsf.listener.PopulationWriter;
 import xcsfExtensions.PriceFunction;
+import LESRClass.InvestorTester;
 import LESRClass.InvestorTesterXcsfImpl;
 
 public class JxcsfRuleSetTest {
@@ -63,7 +64,7 @@ public class JxcsfRuleSetTest {
 		
 		FunctionApproxToRules rulemaker = new XcsfRlsFunctionApproxToRulesImpl();
 		rulemaker.parseRulesFromPopulation();
-		InvestorTesterXcsfImpl test = new InvestorTesterXcsfImpl(ig);
+		InvestorTester test = new InvestorTesterXcsfImpl(ig);
 		test.test(rulemaker.getRuleset());
 		assertNotNull(rulemaker.getRuleset());
 	}
@@ -75,7 +76,7 @@ public class JxcsfRuleSetTest {
 		InputGenerator ig = new InputGenerator5InputsImpl();
 		rulemaker.parseRulesFromPopulation();
 //		System.out.println("rules " + (rulemaker.getRuleset()==null? "are null": "are not null"));
-		InvestorTesterXcsfImpl test = new InvestorTesterXcsfImpl(ig);
+		InvestorTester test = new InvestorTesterXcsfImpl(ig);
 		test.test(rulemaker.getRuleset());
 		
 		assertNotNull(rulemaker.getRuleset());
@@ -87,7 +88,7 @@ public class JxcsfRuleSetTest {
 	public void testDoNothing(){
 		RuleSet rules = new RuleSetDoNothing();
 		System.out.println("rules " + (rules==null? "are null": "are not null"));
-		InvestorTesterXcsfImpl test = new InvestorTesterXcsfImpl(new InputGenerator4InputsImpl());
+		InvestorTester test = new InvestorTesterXcsfImpl(new InputGenerator4InputsImpl());
 		test.test(rules);
 		
 		
