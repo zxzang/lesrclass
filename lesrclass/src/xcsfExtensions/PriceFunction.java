@@ -1,5 +1,6 @@
 package xcsfExtensions;
 
+import inputGenerators.InputGenerator;
 import LESRData.PriceData;
 import LESRData.Stock;
 import xcsf.StateDescriptor;
@@ -16,6 +17,7 @@ public class PriceFunction extends SimpleFunction {
 	Stock stock;
 	PriceData hist;
 	int dim;
+	InputGenerator ig;
 	
 	double[][] bounds;
 
@@ -60,19 +62,16 @@ public class PriceFunction extends SimpleFunction {
 		return value;
 	}
 
-	@Override
-	protected void generateInput() {
-
-		currtick = (int) (XCSFUtils.Random.uniRand() * (hist.getLength() - 1));
-		input[0] = currtick > 0? (hist.getAdjClose(currtick) / hist.getAdjClose(currtick - 1))*100 : 100.0;
-		input[1] = currtick > 49? (hist.getAdjClose(currtick)/hist.getMaFifty(currtick)) * 100: 100.0;
-		input[2] = currtick > 199? (hist.getAdjClose(currtick)/hist.getMaTwoHundred(currtick))* 100: 100.0;
+	
+	public void setInputGenerator(InputGenerator ig){
 		
-		for(int i = 0; i < dim; i++) {
-			if(input[i] < bounds[i][0]|| bounds[i][0] == 0) bounds[i][0] = input[i];
-			if(input[i] > bounds[i][1]) bounds[i][1] = input[i];
-			
-		}
+		this.ig=ig;
+		
+	}
+	
+	protected void generateInput() {
+		currtick = (int) (XCSFUtils.Random.uniRand() * (hist.getLength() - 1));
+		input = ig.generateInput(hist, currtick);
 	
 	}
 

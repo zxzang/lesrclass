@@ -2,6 +2,9 @@ package LESRClass;
 import javax.swing.JOptionPane;
 
 import org.jfree.util.Log;
+
+import rules.RuleSet;
+import rules.RuleSetGAImpl;
 import LESRData.SplitData;
 import java.util.*;
 

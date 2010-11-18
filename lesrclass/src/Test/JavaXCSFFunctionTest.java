@@ -1,5 +1,7 @@
 package Test;
 
+import inputGenerators.InputGenerator4InputsImpl;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -82,10 +84,11 @@ public class JavaXCSFFunctionTest {
 	
 	@Test
 	public void testPriceFunction() {
-		PriceFunction f = new PriceFunction(1, 0, 0, 3);
+		PriceFunction f = new PriceFunction(1, 0, 0, 4);
 		
 		XCSFConstants.load("xcsf.ini");
 		XCSF xcsf = new XCSF(f);
+		f.setInputGenerator(new InputGenerator4InputsImpl());
 //		xcsf.addListener(new PerformanceGUI(true));
 //		xcsf.addListener(new ConditionsGUI2D3D());
 //		xcsf.addListener(new OutputWriter2D("",false,0,1,1));

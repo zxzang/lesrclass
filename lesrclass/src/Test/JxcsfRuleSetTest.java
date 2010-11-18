@@ -1,12 +1,14 @@
 package Test;
 
 import static org.junit.Assert.assertNotNull;
+import inputGenerators.InputGenerator;
+import inputGenerators.InputGenerator2InputsImpl;
+import inputGenerators.InputGenerator4InputsImpl;
+import inputGenerators.InputGenerator5InputsImpl;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -14,7 +16,14 @@ import org.junit.Test;
 
 import rulemakers.FunctionApproxToRules;
 import rulemakers.XcsfRlsFunctionApproxToRulesImpl;
+import rules.RuleSet;
+import rules.RuleSetDoNothing;
 import xcsf.Population;
+import xcsf.XCSF;
+import xcsf.XCSFConstants;
+import xcsf.listener.PopulationWriter;
+import xcsfExtensions.PriceFunction;
+import LESRClass.InvestorTesterXcsfImpl;
 
 public class JxcsfRuleSetTest {
 
@@ -41,14 +50,48 @@ public class JxcsfRuleSetTest {
 	}
 	
 	@Test
+	public void testFunctionAndRules(){
+		PriceFunction f = new PriceFunction(1, 0, 0, 2);
+		InputGenerator ig = new InputGenerator2InputsImpl();
+		
+		XCSFConstants.load("xcsf.ini");
+		XCSF xcsf = new XCSF(f);
+		f.setInputGenerator(ig);
+		
+		xcsf.addListener(new PopulationWriter(null));
+		xcsf.runExperiments();
+		
+		FunctionApproxToRules rulemaker = new XcsfRlsFunctionApproxToRulesImpl();
+		rulemaker.parseRulesFromPopulation();
+		InvestorTesterXcsfImpl test = new InvestorTesterXcsfImpl(ig);
+		test.test(rulemaker.getRuleset());
+		assertNotNull(rulemaker.getRuleset());
+	}
+	
+	@Ignore
+	@Test
 	public void testRules(){
 		FunctionApproxToRules rulemaker = new XcsfRlsFunctionApproxToRulesImpl();
+		InputGenerator ig = new InputGenerator5InputsImpl();
+		rulemaker.parseRulesFromPopulation();
+//		System.out.println("rules " + (rulemaker.getRuleset()==null? "are null": "are not null"));
+		InvestorTesterXcsfImpl test = new InvestorTesterXcsfImpl(ig);
+		test.test(rulemaker.getRuleset());
 		
-		
+		assertNotNull(rulemaker.getRuleset());
+	
+	}
+	
+	@Ignore
+	@Test
+	public void testDoNothing(){
+		RuleSet rules = new RuleSetDoNothing();
+		System.out.println("rules " + (rules==null? "are null": "are not null"));
+		InvestorTesterXcsfImpl test = new InvestorTesterXcsfImpl(new InputGenerator4InputsImpl());
+		test.test(rules);
 		
 		
 	}
-	
 	
 	
 	@Ignore

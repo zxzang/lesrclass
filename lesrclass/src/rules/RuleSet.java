@@ -1,6 +1,7 @@
-package LESRClass;
+package rules;
 
 import java.util.List;
+
 
 
 public interface RuleSet {

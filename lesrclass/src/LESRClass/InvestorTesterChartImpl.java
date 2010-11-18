@@ -1,25 +1,20 @@
 package LESRClass;
 
-import java.io.PrintWriter;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
+import javax.swing.JOptionPane;
 
-import LESRData.HighFitnessTracker;
+import org.jfree.data.time.TimeSeries;
 
-import javax.swing.*;
-
-import org.jfree.data.xy.*;
-import org.jfree.data.time.*;
-import org.jfree.data.xy.XYDataset;
-
+import rules.RuleGAImpl;
+import rules.RuleSet;
+import rules.RuleSetGAImpl;
 import Charting.TimeSeriesChart;
-import Charting.ResultsChart;
 import LESRData.PriceData;
 import LESRData.Stock;
 import LESRData.TimeTick;
-
-import java.util.Date;
 public class InvestorTesterChartImpl implements InvestorTester {
 
 	boolean[] genome;

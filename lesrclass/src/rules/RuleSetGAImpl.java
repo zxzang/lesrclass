@@ -1,7 +1,10 @@
-package LESRClass;
-import java.util.*;
+package rules;
+import java.util.ArrayList;
+import java.util.List;
 
-import LESRClass.Rule.RecType;
+import rules.Rule.RecType;
+
+
 
 public class RuleSetGAImpl implements RuleSet {
 	private ArrayList<RuleGAImpl> rules;

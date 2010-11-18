@@ -1,4 +1,4 @@
-package LESRClass;
+package rules;
 
 import xcsf.StateDescriptor;
 import xcsf.classifier.Classifier;

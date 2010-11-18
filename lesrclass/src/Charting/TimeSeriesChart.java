@@ -98,6 +98,7 @@ public class TimeSeriesChart {
 		catch(Exception ex) {}
 
 		ChartViewer view = new ChartViewer(xyChart);
+		
 
 	
 	} // end function
