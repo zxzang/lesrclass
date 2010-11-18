@@ -1,12 +1,12 @@
-package LESRClass;
+package rules;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import rules.Rule.RecType;
 import xcsf.Population;
 import xcsf.StateDescriptor;
 import xcsf.classifier.Classifier;
-import LESRClass.Rule.RecType;
 
 public class RuleSetXCSFImpl implements RuleSet {
 	List<Classifier> classifiers;
@@ -47,8 +47,9 @@ public class RuleSetXCSFImpl implements RuleSet {
 		List<RecType> recs = new ArrayList<RecType>();
 		StateDescriptor state = new StateDescriptor(inputs, outputs);
 		
-		System.out.print("\nnew input: ");
+/*		System.out.print("\nnew input: ");
 		for(double d: inputs) System.out.print(d + " ");
+		*/
 		for (Rule rule:rules) {
 			if(rule.getClassifier().doesMatch(state)){
 				
@@ -64,7 +65,7 @@ public class RuleSetXCSFImpl implements RuleSet {
 		if(totalRec > 0) recommendation = RecType.LONG;
 		else if (totalRec < 0) recommendation = RecType.SHORT;
 		else recommendation = RecType.DONOTHING;
-		System.out.println("totalRec: " + totalRec + " recommendation: " + recommendation. toString());
+//		System.out.println("totalRec: " + totalRec + " recommendation: " + recommendation. toString());
 		return recommendation;
 	}
 

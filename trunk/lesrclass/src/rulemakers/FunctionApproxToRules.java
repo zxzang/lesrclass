@@ -1,11 +1,7 @@
 package rulemakers;
 
-import java.io.File;
-import java.util.List;
-
-import xcsf.Population;
-
-import LESRClass.*;
+import inputGenerators.InputGenerator;
+import rules.RuleSet;
 
 
 

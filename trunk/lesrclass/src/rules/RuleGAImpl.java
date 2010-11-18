@@ -1,6 +1,7 @@
-package LESRClass;
+package rules;
 
 import javax.swing.JOptionPane;
+
 
 import xcsf.StateDescriptor;
 import xcsf.classifier.Classifier;

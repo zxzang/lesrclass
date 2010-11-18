@@ -1,16 +1,14 @@
 package LESRClass;
 
-import java.io.PrintWriter;
+import javax.swing.JOptionPane;
 
+import rules.RuleGAImpl;
+import rules.RuleSet;
+import rules.RuleSetGAImpl;
 import LESRData.HighFitnessTracker;
-
-import javax.swing.*;
-
 import LESRData.PriceData;
 import LESRData.Stock;
 import LESRData.TimeTick;
-
-import java.util.Date;
 public class InvestorTesterNoChartImpl implements InvestorTester{
 
 	boolean[] genome;

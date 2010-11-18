@@ -1,5 +1,7 @@
 package rulemakers;
 
+import inputGenerators.InputGenerator;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -9,11 +11,12 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JOptionPane;
 
+import rules.RuleSet;
+import rules.RuleSetXCSFImpl;
+import rules.Rule.RecType;
+
 import xcsf.Population;
 
-import LESRClass.Rule.RecType;
-import LESRClass.RuleSet;
-import LESRClass.RuleSetXCSFImpl;
 import LESRData.DayInfo;
 
 public class XcsfRlsFunctionApproxToRulesImpl implements FunctionApproxToRules {
@@ -21,7 +24,8 @@ public class XcsfRlsFunctionApproxToRulesImpl implements FunctionApproxToRules {
 	private RuleSet ruleset;
 	private File xcsfOutputFile;
 	private Population pop;
-
+	
+	
 	public XcsfRlsFunctionApproxToRulesImpl() {
 		xcsfOutputFile = chooseFile();
 		readSource(xcsfOutputFile);		
@@ -42,9 +46,10 @@ public class XcsfRlsFunctionApproxToRulesImpl implements FunctionApproxToRules {
 	
 	public void readSource(File xcsfOutputFile){
 		
-			System.out.println("file received by readSource: " 
+/*			System.out.println("file received by readSource: " 
 					+ xcsfOutputFile.getName() + " " +
 					xcsfOutputFile.length() + " bytes");
+					*/
 			Population tempPop = new Population();
 			pop = new Population();
 			try {
@@ -87,7 +92,7 @@ public class XcsfRlsFunctionApproxToRulesImpl implements FunctionApproxToRules {
 					1, null, filenames, 1));
 					
 			
-			System.out.println("chose: " + inputFile.getName());
+//			System.out.println("chose: " + inputFile.getName());
 		}
 		else inputFile = popFiles.get(0);
 		return inputFile;
@@ -102,7 +107,8 @@ public class XcsfRlsFunctionApproxToRulesImpl implements FunctionApproxToRules {
 
 	@Override
 	public void parseRulesFromPopulation() {
-		// TODO Auto-generated method stub
-		
+		ruleset = new RuleSetXCSFImpl(pop);
 	}
+
+	
 }
