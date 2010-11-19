@@ -1,10 +1,7 @@
 package Test;
 
 import static org.junit.Assert.assertNotNull;
-import inputGenerators.InputGenerator;
-import inputGenerators.InputGenerator2InputsImpl;
-import inputGenerators.InputGenerator3InputsImpl;
-import inputGenerators.InputGenerator4InputsImpl;
+import inputGenerators.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,12 +47,15 @@ public class JxcsfRuleSetTest {
 			
 	}
 	
-	@Ignore
 	@Test
 	public void testFunctionAndRules(){
-		PriceFunction f = new PriceFunction(1, 0, 0, 3);
-		InputGenerator ig = new InputGenerator3InputsImpl();
 		
+		InputGenerator ig = new InputGenerator6();
+		
+		String fileName = "sp62-10SplitII.prn";
+		int dim = ig.getDim();
+		PriceFunction f = new PriceFunction(1, 0, 0, dim, fileName);
+				
 		XCSFConstants.load("xcsf.ini");
 		XCSF xcsf = new XCSF(f);
 		f.setInputGenerator(ig);
@@ -65,30 +65,34 @@ public class JxcsfRuleSetTest {
 		
 		FunctionApproxToRules rulemaker = new XcsfRlsFunctionApproxToRulesImpl();
 		rulemaker.parseRulesFromPopulation();
-		InvestorTester test = new InvestorTesterXcsfImpl(ig);
+		InvestorTester test = new InvestorTesterXcsfImpl(ig, fileName);
 		test.test(rulemaker.getRuleset());
 		assertNotNull(rulemaker.getRuleset());
 	}
 	
+	@Ignore
 	@Test
 	public void testRules(){
 		FunctionApproxToRules rulemaker = new XcsfRlsFunctionApproxToRulesImpl();
-		InputGenerator ig = new InputGenerator3InputsImpl();
+		InputGenerator ig = new InputGenerator4();
 		rulemaker.parseRulesFromPopulation();
-//		System.out.println("rules " + (rulemaker.getRuleset()==null? "are null": "are not null"));
-		InvestorTester test = new InvestorTesterXcsfImpl(ig);
+		String fileName = "sp62-10Split.prn";
+		InvestorTester test = new InvestorTesterXcsfImpl(ig, fileName);
 		test.test(rulemaker.getRuleset());
 		
 		assertNotNull(rulemaker.getRuleset());
-	
 	}
+	
+	
 	
 	@Ignore
 	@Test
 	public void testDoNothing(){
 		RuleSet rules = new RuleSetDoNothing();
+		String fileName = "sp62-10Split.prn";
+
 		System.out.println("rules " + (rules==null? "are null": "are not null"));
-		InvestorTester test = new InvestorTesterXcsfImpl(new InputGenerator4InputsImpl());
+		InvestorTester test = new InvestorTesterXcsfImpl(new InputGenerator5(), fileName);
 		test.test(rules);
 		
 		

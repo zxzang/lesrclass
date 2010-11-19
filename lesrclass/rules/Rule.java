@@ -8,8 +8,6 @@ public abstract class Rule {
 
 	public enum RecType{LONG, SHORT, DONOTHING}
 	
-	public abstract RecType evalRule(Double[] inputs, String lastTick);
-
 	public abstract String toString();
 
 	public abstract void goShort();

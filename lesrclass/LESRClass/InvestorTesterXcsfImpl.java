@@ -31,164 +31,120 @@ public class InvestorTesterXcsfImpl implements InvestorTester {
 	PriceData hist;
 	private InputGenerator ig;
 
-	public InvestorTesterXcsfImpl(InputGenerator ig) {
-		fileName = "sp62-10Split.prn";
+	public InvestorTesterXcsfImpl(InputGenerator ig, String fileName) {
+		this.fileName = fileName;
 		stockName = "SP500";
 		stock = new Stock(stockName, 0);
 		outChart = new TimeSeriesChart("./Data/NewChart.png");
 		hist = new PriceData(stockName, fileName);
 		this.ig = ig;
+		TimeTick today = null;
+				
 	}
 
-	/* (non-Javadoc)
-	 * @see LESRClass.InvestorTester#test(rules.RuleSet)
-	 */
+	
 	@Override
 	public void test(RuleSet ruleSetIn) {
 		this.ruleset = ruleSetIn;
 		List<TimeSeries> seriesList = runRuleSet();
 		chart(seriesList);
-
 	}
 
 	private void chart(List<TimeSeries> seriesList) {
 		for (TimeSeries t : seriesList) {
 			outChart.addSeries(t);
+			
 		}
-		
+	
 		outChart.printChart(stock.getSymbol());
 	}
 
 	private List<TimeSeries> runRuleSet() {
 		List<TimeSeries> seriesList = new ArrayList<TimeSeries>();
 
+		String strategyTrainSeriesName = "Apply Strategy On Training Data";
+		TimeSeries strategyTrainSeries = outChart
+				.createSeries(strategyTrainSeriesName);
+		strategyTrainSeries = runSeries(ruleset, "train",
+				strategyTrainSeriesName);
 
-		String strategySeriesName = "Apply Strategy";
-		TimeSeries strategySeries = outChart.createSeries(strategySeriesName);
-		strategySeries = runSeries(ruleset, "train", strategySeriesName);
+		String strategyTestSeriesName = "Apply Strategy On Test Data";
+		TimeSeries strategyTestSeries = outChart
+				.createSeries(strategyTestSeriesName);
+		strategyTestSeries = runSeries(ruleset, "test", strategyTestSeriesName);
 
+		RuleSet buyHoldRules = new RuleSetBuyHold();
+		String buyHoldTrainSeriesName = "Buy and Hold With Training Data";
+		TimeSeries buyHoldTrainSeries = outChart
+				.createSeries(buyHoldTrainSeriesName);
+		buyHoldTrainSeries = runSeries(buyHoldRules, "train",
+				buyHoldTrainSeriesName);
 
-		RuleSet buyHoldRules = new RuleSetBuyHold(); 
-		String buyHoldSeriesName = "Buy and Hold";
-		TimeSeries buyHoldSeries = outChart.createSeries(buyHoldSeriesName);
-		buyHoldSeries = runSeries(buyHoldRules, "train", buyHoldSeriesName);
-
-		RuleSet cashRules = new RuleSetDoNothing(); 
-		String cashSeriesName = "Cash";
-		TimeSeries cashSeries = outChart.createSeries(buyHoldSeriesName);
-		cashSeries = runSeries(cashRules, "cash", cashSeriesName);
+		String buyHoldTestSeriesName = "Buy and Hold With Test Data";
+		TimeSeries buyHoldTestSeries = outChart
+				.createSeries(buyHoldTestSeriesName);
+		buyHoldTestSeries = runSeries(buyHoldRules, "test",
+				buyHoldTestSeriesName);
 
 		
-		seriesList.add(strategySeries);
-		seriesList.add(buyHoldSeries);
-		seriesList.add(cashSeries);
-
+		seriesList.add(strategyTestSeries);
+		seriesList.add(strategyTrainSeries);
+		seriesList.add(buyHoldTestSeries);
+		seriesList.add(buyHoldTrainSeries);
 		
-		/*
-
-		String trainSeriesName = "Apply Strategy on Training Data";
-		String testSeriesName = "Apply Strategy on Test Data";
-		TimeSeries trainSeries = outChart.createSeries(trainSeriesName);
-		TimeSeries testSeries = outChart.createSeries(testSeriesName);
-
-		 * boolean[] buyHoldGenome = convert("0001000111101111"); RuleSet
-		 * buyHoldRules = new RuleSetGAImpl(buyHoldGenome); String
-		 * buyHoldTrainSeriesName = "Buy and Hold, Training Data"; String
-		 * buyHoldTestSeriesName = "Buy and Hold, Test Data"; TimeSeries
-		 * buyHoldTrainSeries = outChart.createSeries(buyHoldTrainSeriesName);
-		 * TimeSeries buyHoldTestSeries =
-		 * outChart.createSeries(buyHoldTestSeriesName);
-		 
-		trainSeries = runSeries(ruleset, "train", trainSeriesName);
-
-//		testSeries = runSeries(ruleset, "test", testSeriesName);
-		// buyHoldTrainSeries = runSeries(buyHoldRules, "train",
-		// buyHoldTrainSeriesName);
-		// buyHoldTestSeries = runSeries(buyHoldRules, "test",
-		// buyHoldTestSeriesName);
-
-		seriesList.add(trainSeries);
-		seriesList.add(testSeries);
-		// seriesList.add(buyHoldTrainSeries);
-		// seriesList.add(buyHoldTestSeries);
-*/
 		return seriesList;
 	}
-	
-	/* (non-Javadoc)
-	 * @see LESRClass.InvestorTester#evalPrediction(LESRData.PriceData, int, rules.Rule.RecType)
-	 */
+
 	@Override
-	public double evalPrediction(PriceData hist, int tick, Rule.RecType rec){
-		
-		double tomorrow = (tick < (hist.getLength()-1))? hist.getAdjClose(tick+1): hist.getAdjClose(tick);
+	public double evalPrediction(PriceData hist, int tick, Rule.RecType rec) {
+
+		double returnVal = 1.0;
+		double tomorrow = (tick < (hist.getLength() - 1)) ? hist
+				.getAdjClose(tick + 1) : hist.getAdjClose(tick);
 		double today = hist.getAdjClose(tick);
-		double returnVal = 1;
 		
 		returnVal = tomorrow / today;
-			
-		if(rec == Rule.RecType.SHORT) returnVal = 1/returnVal;
-		if(rec == Rule.RecType.DONOTHING) returnVal = 1.00;
 
-/*		if(tick%100 ==0) System.out.println(tick+ " today:" + 
-				today + " tomorrow:" + tomorrow + "return: " + returnVal);
-*/
-		
+		if (rec == Rule.RecType.SHORT)
+			returnVal = 1 / returnVal;
+		if (rec == Rule.RecType.DONOTHING)
+			returnVal = 1.00;
+
 		return returnVal;
 	}
 
 	private TimeSeries runSeries(RuleSet rules, String trainOrTest,
 			String seriesName) {
-		
+
 		fitness = 1;
 		TimeSeries series = new TimeSeries(seriesName);
 		TimeTick today = new TimeTick();
-//		String lastTick = stock.getLastTick();
 
 		double inputs[];
 		double outputs[] = new double[1];
-		
+
 		Rule.RecType rec = Rule.RecType.DONOTHING;
 
-		int datasetCount = 0;
-
 		for (int a = 1; a < hist.getLength(); a++) {
-			
-			setTodaysValues(hist, today, stock, a);
 
 			inputs = ig.generateInput(hist, today.getTickNum());
-//			if (hist.getTrainTest(a) == trainOrTest) {
-				if (a > 200) {
-					datasetCount++;
-					
-					// these must match the inputs in the function!  Abstract this out later!
-					
-					int currtick = today.getTickNum();
-					inputs = ig.generateInput(hist, currtick);
-					Date date = stock.getDate();
+			if (hist.getTrainTest(a) == trainOrTest) {
+				setTodaysValues(hist, today, stock, a);
 
-					outputs[0] = currtick < (hist.getLength() -1)? 
-							(hist.getAdjClose(currtick+1)/hist.getAdjClose(currtick))*100:100.0;
-					if (trainOrTest == "train")
-						outChart.addPoint(series, date, fitness);
-					if (trainOrTest == "test")
-						outChart.addPoint(series, date, fitness);
+				int currtick = today.getTickNum();
+				inputs = ig.generateInput(hist, currtick);
+				Date date = stock.getDate();
 
-//					Double[] smas = stock.getSmas();
-/*					for(int i = 0; i < inputs.length;i++) {
-						System.out.println("inputs[" + i + "] = " + inputs[i]);	
-					}
+				outputs[0] = currtick < (hist.getLength() - 1) ? (hist
+						.getAdjClose(currtick + 1) / hist.getAdjClose(currtick)) * 100
+						: 100.0;
+				
 
-					for(int i = 0; i < outputs.length;i++) {
-						System.out.println("outputs[" + i + "] = " + outputs[i]);	
-					}
-	*/				
-
-					rec = rules.getRecommendation(inputs, outputs);
-					fitness *= evalPrediction(hist, currtick, rec);
-				}
+				rec = rules.getRecommendation(inputs, outputs);
+				fitness *= evalPrediction(hist, currtick, rec);
+				outChart.addPoint(series, date, fitness);
 			}
-//		}
+		}
 		System.out.println("Series: " + seriesName + " Fitness: " + fitness);
 		return series;
 	}
@@ -209,5 +165,4 @@ public class InvestorTesterXcsfImpl implements InvestorTester {
 		stock.setTrainTest(hist.getTrainTest(tickCounter));
 	}
 
-	
 }
