@@ -3,8 +3,8 @@ package Test;
 import static org.junit.Assert.assertNotNull;
 import inputGenerators.InputGenerator;
 import inputGenerators.InputGenerator2InputsImpl;
+import inputGenerators.InputGenerator3InputsImpl;
 import inputGenerators.InputGenerator4InputsImpl;
-import inputGenerators.InputGenerator5InputsImpl;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,10 +50,11 @@ public class JxcsfRuleSetTest {
 			
 	}
 	
+	@Ignore
 	@Test
 	public void testFunctionAndRules(){
-		PriceFunction f = new PriceFunction(1, 0, 0, 2);
-		InputGenerator ig = new InputGenerator2InputsImpl();
+		PriceFunction f = new PriceFunction(1, 0, 0, 3);
+		InputGenerator ig = new InputGenerator3InputsImpl();
 		
 		XCSFConstants.load("xcsf.ini");
 		XCSF xcsf = new XCSF(f);
@@ -69,11 +70,10 @@ public class JxcsfRuleSetTest {
 		assertNotNull(rulemaker.getRuleset());
 	}
 	
-	@Ignore
 	@Test
 	public void testRules(){
 		FunctionApproxToRules rulemaker = new XcsfRlsFunctionApproxToRulesImpl();
-		InputGenerator ig = new InputGenerator5InputsImpl();
+		InputGenerator ig = new InputGenerator3InputsImpl();
 		rulemaker.parseRulesFromPopulation();
 //		System.out.println("rules " + (rulemaker.getRuleset()==null? "are null": "are not null"));
 		InvestorTester test = new InvestorTesterXcsfImpl(ig);

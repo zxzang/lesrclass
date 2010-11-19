@@ -47,11 +47,6 @@ public class RuleXcsfImpl extends Rule {
 	
 
 	@Override
-	public void setWeight(int weight) {
-		this.weight = weight;
-	}
-
-	@Override
 	public void goShort(){
 //		System.out.println("recommend short");
 		recommendation = RecType.SHORT;
@@ -90,17 +85,7 @@ public class RuleXcsfImpl extends Rule {
 		this.recommendation = recommendation;
 	}
 
-	@Override
-	public void setRecommendation() {
-		// TODO Auto-generated method stub
-		
-	}
-	public void setWeight(double fitnessIn){
-		weight = 1 - fitnessIn;
 	
-	}
-
-
 	@Override
 	public RecType evalRule(Double[] SMAsIn, String lastTick) {
 		// TODO Auto-generated method stub
@@ -108,26 +93,11 @@ public class RuleXcsfImpl extends Rule {
 	}
 
 
-	@Override
-	public void setTests(Double varA, Double varB, int n, boolean same) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public int getWeight() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
+	
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-
-	
 	
 }

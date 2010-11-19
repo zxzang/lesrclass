@@ -69,10 +69,6 @@ public class RuleSetXCSFImpl implements RuleSet {
 		return recommendation;
 	}
 
-	@Override
-	public RecType getRecommendation(Double[] SMAsIn, String lastTick) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 }
