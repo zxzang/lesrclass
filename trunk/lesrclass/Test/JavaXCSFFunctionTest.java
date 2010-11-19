@@ -1,6 +1,6 @@
 package Test;
 
-import inputGenerators.InputGenerator4InputsImpl;
+import inputGenerators.InputGenerator5;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -84,11 +84,12 @@ public class JavaXCSFFunctionTest {
 	
 	@Test
 	public void testPriceFunction() {
-		PriceFunction f = new PriceFunction(1, 0, 0, 4);
+		String fileName = "sp62-10SplitI.prn";
+		PriceFunction f = new PriceFunction(1, 0, 0, 4, fileName);
 		
 		XCSFConstants.load("xcsf.ini");
 		XCSF xcsf = new XCSF(f);
-		f.setInputGenerator(new InputGenerator4InputsImpl());
+		f.setInputGenerator(new InputGenerator5());
 //		xcsf.addListener(new PerformanceGUI(true));
 //		xcsf.addListener(new ConditionsGUI2D3D());
 //		xcsf.addListener(new OutputWriter2D("",false,0,1,1));
@@ -102,7 +103,7 @@ public class JavaXCSFFunctionTest {
 		} 
 		*/
 		xcsf.runExperiments();
-		f.showBounds();
+		
 	}
 	
 	@Ignore

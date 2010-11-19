@@ -46,10 +46,6 @@ public class XcsfRlsFunctionApproxToRulesImpl implements FunctionApproxToRules {
 	
 	public void readSource(File xcsfOutputFile){
 		
-/*			System.out.println("file received by readSource: " 
-					+ xcsfOutputFile.getName() + " " +
-					xcsfOutputFile.length() + " bytes");
-					*/
 			Population tempPop = new Population();
 			pop = new Population();
 			try {
