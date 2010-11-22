@@ -47,9 +47,6 @@ public class RuleSetXCSFImpl implements RuleSet {
 		List<RecType> recs = new ArrayList<RecType>();
 		StateDescriptor state = new StateDescriptor(inputs, outputs);
 		
-/*		System.out.print("\nnew input: ");
-		for(double d: inputs) System.out.print(d + " ");
-		*/
 		for (Rule rule:rules) {
 			if(rule.getClassifier().doesMatch(state)){
 				

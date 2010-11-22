@@ -38,11 +38,9 @@ public class InvestorTesterXcsfImpl implements InvestorTester {
 		outChart = new TimeSeriesChart("./Data/NewChart.png");
 		hist = new PriceData(stockName, fileName);
 		this.ig = ig;
-		TimeTick today = null;
-				
+
 	}
 
-	
 	@Override
 	public void test(RuleSet ruleSetIn) {
 		this.ruleset = ruleSetIn;
@@ -53,9 +51,9 @@ public class InvestorTesterXcsfImpl implements InvestorTester {
 	private void chart(List<TimeSeries> seriesList) {
 		for (TimeSeries t : seriesList) {
 			outChart.addSeries(t);
-			
+
 		}
-	
+
 		outChart.printChart(stock.getSymbol());
 	}
 
@@ -83,15 +81,15 @@ public class InvestorTesterXcsfImpl implements InvestorTester {
 		String buyHoldTestSeriesName = "Buy and Hold With Test Data";
 		TimeSeries buyHoldTestSeries = outChart
 				.createSeries(buyHoldTestSeriesName);
-		buyHoldTestSeries = runSeries(buyHoldRules, "test",
+
+		buyHoldTestSeries = runSeries(new RuleSetBuyHold(), "test",
 				buyHoldTestSeriesName);
 
-		
 		seriesList.add(strategyTestSeries);
 		seriesList.add(strategyTrainSeries);
 		seriesList.add(buyHoldTestSeries);
 		seriesList.add(buyHoldTrainSeries);
-		
+
 		return seriesList;
 	}
 
@@ -102,7 +100,7 @@ public class InvestorTesterXcsfImpl implements InvestorTester {
 		double tomorrow = (tick < (hist.getLength() - 1)) ? hist
 				.getAdjClose(tick + 1) : hist.getAdjClose(tick);
 		double today = hist.getAdjClose(tick);
-		
+
 		returnVal = tomorrow / today;
 
 		if (rec == Rule.RecType.SHORT)
@@ -138,10 +136,17 @@ public class InvestorTesterXcsfImpl implements InvestorTester {
 				outputs[0] = currtick < (hist.getLength() - 1) ? (hist
 						.getAdjClose(currtick + 1) / hist.getAdjClose(currtick)) * 100
 						: 100.0;
-				
 
 				rec = rules.getRecommendation(inputs, outputs);
 				fitness *= evalPrediction(hist, currtick, rec);
+				double tomorrow = (a < (hist.getLength() - 1) ? hist
+						.getAdjClose(a + 1) : hist.getAdjClose(a));
+				/*
+				 * if(trainOrTest == "test") System.out.println("test: " +
+				 * hist.getDate(a) + " close: "+ hist.getAdjClose(a) +
+				 * " tomorrow close: " + tomorrow + "daily fitness: " +
+				 * evalPrediction(hist, currtick, rec));
+				 */
 				outChart.addPoint(series, date, fitness);
 			}
 		}
@@ -163,6 +168,67 @@ public class InvestorTesterXcsfImpl implements InvestorTester {
 		stock.setCrossover(hist, tickCounter);
 		stock.setDate(hist.getCDate(tickCounter));
 		stock.setTrainTest(hist.getTrainTest(tickCounter));
+	}
+
+	public void testNoSplit(RuleSet ruleSetIn) {
+		this.ruleset = ruleSetIn;
+		List<TimeSeries> seriesList = runRuleSetNoSplit();
+		chart(seriesList);
+	}
+
+	private List<TimeSeries> runRuleSetNoSplit() {
+		List<TimeSeries> seriesList = new ArrayList<TimeSeries>();
+
+		String strategyTrainSeriesName = "Apply Strategy On All Data";
+		TimeSeries strategyTrainSeries = outChart
+				.createSeries(strategyTrainSeriesName);
+		strategyTrainSeries = runSeriesNoSplit(ruleset, strategyTrainSeriesName);
+
+		RuleSet buyHoldRules = new RuleSetBuyHold();
+		String buyHoldTrainSeriesName = "Buy and Hold";
+		TimeSeries buyHoldTrainSeries = outChart
+				.createSeries(buyHoldTrainSeriesName);
+		buyHoldTrainSeries = runSeriesNoSplit(buyHoldRules,
+				buyHoldTrainSeriesName);
+		seriesList.add(strategyTrainSeries);
+		seriesList.add(buyHoldTrainSeries);
+
+		return seriesList;
+	}
+
+	private TimeSeries runSeriesNoSplit(RuleSet rules, String seriesName) {
+
+		fitness = 1;
+		TimeSeries series = new TimeSeries(seriesName);
+		TimeTick today = new TimeTick();
+
+		double inputs[];
+		double outputs[] = new double[1];
+
+		Rule.RecType rec = Rule.RecType.DONOTHING;
+
+		for (int a = 1; a < hist.getLength(); a++) {
+
+			inputs = ig.generateInput(hist, today.getTickNum());
+
+			setTodaysValues(hist, today, stock, a);
+
+			int currtick = today.getTickNum();
+			inputs = ig.generateInput(hist, currtick);
+			Date date = stock.getDate();
+
+			outputs[0] = currtick < (hist.getLength() - 1) ? (hist
+					.getAdjClose(currtick + 1) / hist.getAdjClose(currtick)) * 100
+					: 100.0;
+
+			rec = rules.getRecommendation(inputs, outputs);
+			fitness *= evalPrediction(hist, currtick, rec);
+			double tomorrow = (a < (hist.getLength() - 1) ? hist
+					.getAdjClose(a + 1) : hist.getAdjClose(a));
+			outChart.addPoint(series, date, fitness);
+		}
+		System.out.println("Series: " + seriesName + " Fitness: " + fitness);
+		return series;
 	}
 
 }

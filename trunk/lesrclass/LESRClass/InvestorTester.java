@@ -7,6 +7,7 @@ import LESRData.PriceData;
 public interface InvestorTester {
 
 	public abstract void test(RuleSet ruleSetIn);
+	public abstract void testNoSplit(RuleSet ruleSetIn);
 
 	public double evalPrediction(PriceData hist, int tick, Rule.RecType rec);
 		
