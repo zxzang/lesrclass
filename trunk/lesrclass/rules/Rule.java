@@ -21,5 +21,8 @@ public abstract class Rule {
 	public abstract RecType getRecommendation();
 	
 	public abstract RecType getRecommendation(StateDescriptor state);
+	
+	public abstract double getPrediction(StateDescriptor state);
+		
 
 }
