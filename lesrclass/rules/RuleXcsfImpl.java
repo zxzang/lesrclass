@@ -40,8 +40,26 @@ public class RuleXcsfImpl extends Rule {
 		
 		return recommendation;
 	}
-	
 
+	public double getPrediction(StateDescriptor state){
+		classifier.predict(state);
+		Prediction prediction = classifier.getPrediction();
+		double[] input = state.getPredictionInput();
+		 
+		double[] centeredInput = state.getPredictionInput();
+		for(int i = 0; i < centeredInput.length; i++)
+			centeredInput[i] -= classifier.getCondition().getCenter()[i];
+		
+		double[] predChange = prediction.predict(centeredInput);
+	
+		double predNum = predChange[0] - 100;
+		
+		return predNum;
+	}
+
+	
+	
+	
 	@Override
 	public void goShort(){
 		recommendation = RecType.SHORT;

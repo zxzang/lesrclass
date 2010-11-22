@@ -40,7 +40,7 @@ public class RuleSetXCSFImpl implements RuleSet {
 		
 	}
 
-	@Override
+/*	@Override
 	public RecType getRecommendation(double[] inputs, double[] outputs) {
 		RecType recommendation;	
 		int totalRec = 0;
@@ -59,6 +59,29 @@ public class RuleSetXCSFImpl implements RuleSet {
 			if(rec == RecType.LONG) totalRec += 1;
 			else if(rec == RecType.SHORT) totalRec -= 1;
 		}
+		if(totalRec > 0) recommendation = RecType.LONG;
+		else if (totalRec < 0) recommendation = RecType.SHORT;
+		else recommendation = RecType.DONOTHING;
+//		System.out.println("totalRec: " + totalRec + " recommendation: " + recommendation. toString());
+		return recommendation;
+	}
+*/
+
+	@Override
+	public RecType getRecommendation(double[] inputs, double[] outputs) {
+		RecType recommendation;	
+		double totalRec = 0;
+		
+		StateDescriptor state = new StateDescriptor(inputs, outputs);
+		
+		for (Rule rule:rules) {
+			if(rule.getClassifier().doesMatch(state)){
+				
+				totalRec += (rule.getPrediction(state));
+//				System.out.println("prediction:  "+ rule.getPrediction(state));
+			}			
+		}
+		
 		if(totalRec > 0) recommendation = RecType.LONG;
 		else if (totalRec < 0) recommendation = RecType.SHORT;
 		else recommendation = RecType.DONOTHING;

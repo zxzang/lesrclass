@@ -47,7 +47,7 @@ public class JxcsfRuleSetTest {
 			
 	}
 	
-
+	@Ignore
 	@Test
 	public void testFunctionAndRules(){
 		
@@ -89,7 +89,6 @@ public class JxcsfRuleSetTest {
 		assertNotNull(rulemaker.getRuleset());
 	}
 
-	@Ignore
 	@Test
 	public void testRules(){
 		FunctionApproxToRules rulemaker = new XcsfRlsFunctionApproxToRulesImpl();
