@@ -23,16 +23,20 @@ public class RuleXcsfImpl extends Rule {
 	public Classifier getClassifier(){return classifier;}
 	
 
-	public RecType getRecommendation(StateDescriptor state){
+/*	public RecType getRecommendation(StateDescriptor state){
+		System.out.println("getRec called");
 		classifier.predict(state);
 		Prediction prediction = classifier.getPrediction();
 		double[] input = state.getPredictionInput();
 		 
 		double[] centeredInput = state.getPredictionInput();
-		for(int i = 0; i < centeredInput.length; i++)
+		for(int i = 0; i < centeredInput.length; i++){
 			centeredInput[i] -= classifier.getCondition().getCenter()[i];
-		
-		double[] predChange = prediction.predict(centeredInput);
+			System.out.println("i: " + i + " input" + input[i] + " center" + 
+					classifier.getCondition().getCenter()[i] + " centered input: " + centeredInput[i]);
+		}
+//		double[] predChange = prediction.predict(centeredInput);
+		double[] predChange = prediction.predict(input);
 	
 		if(predChange[0] > (100+ threshold)) goLong();
 		else if(predChange[0] < (100-threshold)) goShort();
@@ -40,17 +44,20 @@ public class RuleXcsfImpl extends Rule {
 		
 		return recommendation;
 	}
-
+*/
 	public double getPrediction(StateDescriptor state){
+	
 		classifier.predict(state);
 		Prediction prediction = classifier.getPrediction();
 		double[] input = state.getPredictionInput();
 		 
-		double[] centeredInput = state.getPredictionInput();
-		for(int i = 0; i < centeredInput.length; i++)
-			centeredInput[i] -= classifier.getCondition().getCenter()[i];
+		double[] centeredInput = new double[input.length];
+		for(int i = 0; i < centeredInput.length; i++){
+			centeredInput[i] = input[i] - classifier.getCondition().getCenter()[i];
+		}
 		
 		double[] predChange = prediction.predict(centeredInput);
+//		double[] predChange = prediction.predict(input);
 	
 		double predNum = predChange[0] - 100;
 		
@@ -86,6 +93,12 @@ public class RuleXcsfImpl extends Rule {
 	
 	@Override
 	public String toString() {
+		return null;
+	}
+
+	@Override
+	public RecType getRecommendation(StateDescriptor state) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 	
