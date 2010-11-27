@@ -52,12 +52,13 @@ public class JxcsfRuleSetTest {
 	public void testFunctionAndRules(){
 		
 		// set up the input generator
-		InputGenerator ig = new InputGenerator3();
+		InputGenerator ig = new InputGenerator13();
+		
+		// set dim to the number of dimensions used by the particular input generator
+		int dim = ig.getDim();
 		
 		// set the data file to read from 
 		String fileName = "sp62-10SplitII.prn";
-		// set dim to the number of dimensions used by the particular input generator
-		int dim = ig.getDim();
 		
 		// construct the function and set its input generator 
 		PriceFunction f = new PriceFunction(1, 0, 0, dim, fileName);
@@ -67,7 +68,7 @@ public class JxcsfRuleSetTest {
 		// iterations and the types of conditions and predictions 
 		XCSFConstants.load("xcsf.ini");
 		
-		// construct the top-leve XCSF class
+		// construct the top-level XCSF class
 		XCSF xcsf = new XCSF(f);
 		
 		// PopulationWriter is a listener that saves the output to a file
@@ -93,7 +94,7 @@ public class JxcsfRuleSetTest {
 	public void testRules(){
 		FunctionApproxToRules rulemaker = new XcsfRlsFunctionApproxToRulesImpl();
 		
-		InputGenerator ig = new InputGenerator7();
+		InputGenerator ig = new InputGenerator9();
 		rulemaker.parseRulesFromPopulation();
 		
 		String fileName = "sp62-10SplitII.prn";
@@ -108,7 +109,7 @@ public class JxcsfRuleSetTest {
 	@Test
 	public void testRulesNoTTSplit(){
 		FunctionApproxToRules rulemaker = new XcsfRlsFunctionApproxToRulesImpl();
-		InputGenerator ig = new InputGenerator4();
+		InputGenerator ig = new InputGenerator5();
 		rulemaker.parseRulesFromPopulation();
 				
 		String fileName = "sp62-10SplitII.prn";
