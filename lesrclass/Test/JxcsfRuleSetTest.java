@@ -90,11 +90,12 @@ public class JxcsfRuleSetTest {
 		assertNotNull(rulemaker.getRuleset());
 	}
 
+	
 	@Test
 	public void testRules(){
 		FunctionApproxToRules rulemaker = new XcsfRlsFunctionApproxToRulesImpl();
 		
-		InputGenerator ig = new InputGenerator9();
+		InputGenerator ig = new InputGenerator6();
 		rulemaker.parseRulesFromPopulation();
 		
 		String fileName = "sp62-10SplitII.prn";

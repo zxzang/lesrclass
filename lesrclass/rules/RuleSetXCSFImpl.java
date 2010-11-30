@@ -78,14 +78,15 @@ public class RuleSetXCSFImpl implements RuleSet {
 			if(rule.getClassifier().doesMatch(state)){
 				
 				totalRec += (rule.getPrediction(state));
-//				System.out.println("prediction:  "+ rule.getPrediction(state));
+				
 			}			
+			
 		}
 		
 		if(totalRec > 0) recommendation = RecType.LONG;
 		else if (totalRec < 0) recommendation = RecType.SHORT;
 		else recommendation = RecType.DONOTHING;
-//		System.out.println("totalRec: " + totalRec + " recommendation: " + recommendation. toString());
+
 		return recommendation;
 	}
 

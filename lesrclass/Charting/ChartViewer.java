@@ -29,14 +29,14 @@ public class ChartViewer extends JFrame{
 		setLayout(new GridLayout(1,1,1,1));
 		add (new JLabel(icon));
 		setVisible(true);
-		setSize(1280,790);
+		setSize(1200,700);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 	}
 	
 	public ChartViewer(JFreeChart chart) {
 		ChartPanel chartPanel = new ChartPanel(chart);
-		chartPanel.setPreferredSize(new java.awt.Dimension(1280, 790));
+		chartPanel.setPreferredSize(new java.awt.Dimension(1280, 770));
 		chartPanel.setMouseZoomable(true, false);
 		setContentPane(chartPanel);				
 		setSize(1280,790);

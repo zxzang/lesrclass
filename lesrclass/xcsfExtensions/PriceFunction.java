@@ -35,9 +35,11 @@ public class PriceFunction extends SimpleFunction {
 	protected double evaluate() {
 		Double value = 0D;
 			
-		if (currtick < (hist.getLength() - 2))
+		if (currtick < (hist.getLength() - 2)){
 			value = (hist.getAdjClose(currtick + 1))/(hist.getAdjClose(currtick))* 100;
-		else value = 100.0;
+//			value = value * (currtick / (hist.getLength()-1));	
+		}	
+			else value = 100.0;
 		return value;
 	}
 
