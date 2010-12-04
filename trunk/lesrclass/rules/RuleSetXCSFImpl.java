@@ -27,6 +27,10 @@ public class RuleSetXCSFImpl implements RuleSet {
 		
 	}
 	
+	public int getRuleSetLength(){
+			return rules.size();
+	}
+	
 	public void makeRules(){
 		rules = new ArrayList<Rule> ();
 		for(Classifier classifier: classifiers) 

@@ -18,7 +18,7 @@ public class InputGenerator18 implements InputGenerator {
 		input[0] = currtick > 0 ? (hist.getAdjClose(currtick) / hist
 				.getAdjClose(currtick - 1)) * 100 : 100.0;
 		input[1] = currtick > 199 ? (hist.getAdjClose(currtick) / hist
-				.getAdjClose(currtick-1)) * 100 : 100.0;
+				.getMaTen(currtick)) * 100 : 100.0;
 		
 		input[2] = currtick > 0? (hist.getVolume(currtick) / hist.getVolume(currtick-1))*100 : 100.0;
 		

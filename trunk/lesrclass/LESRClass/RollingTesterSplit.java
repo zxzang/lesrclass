@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import org.jfree.data.time.TimeSeries;
 
 import rulemakers.RollingFunctionApproxToRules;
@@ -21,7 +23,7 @@ import LESRData.PriceData;
 import LESRData.Stock;
 import LESRData.TimeTick;
 
-public class RollingTester {
+public class RollingTesterSplit {
 
 	int maxlength;
 	String stockName;
@@ -37,7 +39,13 @@ public class RollingTester {
 	private InputGenerator ig;
 	int rollperiod;
 
-	public RollingTester(String fileName, InputGenerator ig, int rollperiod) {
+	String strategyTrainSeriesName = "Apply Strategy On Training Data";
+	TimeSeries strategyTrainSeries;
+
+	String strategyTestSeriesName = "Apply Strategy On Test Data";
+	TimeSeries strategyTestSeries;
+
+	public RollingTesterSplit(String fileName, InputGenerator ig, int rollperiod) {
 		this.fileName = fileName;
 		stockName = "SP500";
 		stock = new Stock(stockName, 0);
@@ -45,9 +53,14 @@ public class RollingTester {
 		hist = new PriceData(stockName, fileName);
 		this.ig = ig;
 		this.rollperiod = rollperiod;
-		maxlength = hist.getLength() -1;
-		
-		maxlength = 2000;
+		 maxlength = hist.getLength() -1;
+
+		maxlength = 3000;
+
+		strategyTrainSeries = outChart.createSeries(strategyTrainSeriesName);
+
+		strategyTestSeries = outChart.createSeries(strategyTestSeriesName);
+
 	}
 
 	public void test() {
@@ -67,18 +80,8 @@ public class RollingTester {
 	private List<TimeSeries> generateSeries() {
 		List<TimeSeries> seriesList = new ArrayList<TimeSeries>();
 
-		String strategyTrainSeriesName = "Apply Strategy On Training Data";
-		TimeSeries strategyTrainSeries = outChart
-				.createSeries(strategyTrainSeriesName);
-		strategyTrainSeries = runRollingSeries(ruleset, "train",
-				strategyTrainSeriesName);
+		runRollingSeries(ruleset);
 
-		/*
-		 * String strategyTestSeriesName = "Apply Strategy On Test Data";
-		 * TimeSeries strategyTestSeries = outChart
-		 * .createSeries(strategyTestSeriesName); strategyTestSeries =
-		 * runRollingSeries(ruleset, "test", strategyTestSeriesName);
-		 */
 		RuleSet buyHoldRules = new RuleSetBuyHold();
 		String buyHoldTrainSeriesName = "Buy and Hold With Training Data";
 		TimeSeries buyHoldTrainSeries = outChart
@@ -93,7 +96,7 @@ public class RollingTester {
 		buyHoldTestSeries = runSeries(new RuleSetBuyHold(), "test",
 				buyHoldTestSeriesName);
 
-		// seriesList.add(strategyTestSeries);
+		seriesList.add(strategyTestSeries);
 		seriesList.add(strategyTrainSeries);
 		seriesList.add(buyHoldTestSeries);
 		seriesList.add(buyHoldTrainSeries);
@@ -171,10 +174,9 @@ public class RollingTester {
 		stock.setTrainTest(hist.getTrainTest(tickCounter));
 	}
 
-	private TimeSeries runRollingSeries(RuleSet rules, String trainOrTest,
-			String seriesName) {
-		TimeSeries series = new TimeSeries(seriesName);
-		fitness = 1;
+	private void runRollingSeries(RuleSet rules) {
+		double trainFitness = 1.0;
+		double testFitness = 1.0;
 		int dim = ig.getDim();
 		PriceFunctionRolling f = new PriceFunctionRolling(1, 0, 0, dim,
 				fileName, rollperiod);
@@ -187,47 +189,55 @@ public class RollingTester {
 		RollingPopTracker rpt = new RollingPopTracker(null);
 		xcsf.addListener(rpt);
 
+		RollingFunctionApproxToRules rulemaker = null;
+//		rulemaker.parseRulesFromPopulation();
+		
 		for (int i = 201; i < maxlength - rollperiod - 1; i++) {
 			f.setStart(i);
 			xcsf.runExperiments();
-			RollingFunctionApproxToRules rulemaker = new RollingFunctionApproxToRules(
-					rpt);
-			rulemaker.parseRulesFromPopulation();
-			fitness *= runOnePoint(i, trainOrTest, series, rulemaker);
+
+			if(hist.getTrainTest(i)=="train"){
+				rulemaker = new RollingFunctionApproxToRules(
+						rpt);
+				rulemaker.parseRulesFromPopulation();
+				trainFitness *= runOnePoint(i, rulemaker);
+		
+				
+			}
+			else if(rulemaker != null) testFitness *= runOnePoint(i, rulemaker);
+
+			
 			TimeTick today = new TimeTick();
 
 			setTodaysValues(hist, today, stock, i);
 
 			Date date = stock.getDate();
 
-			outChart.addPoint(series, date, fitness);
+			outChart.addPoint(strategyTrainSeries, date, trainFitness);
+			outChart.addPoint(strategyTestSeries, date, testFitness);
 		}	
-		System.out.println("Series: " + seriesName + " Fitness: " + fitness);
-		return series;
+		System.out.println("Series: " + strategyTrainSeriesName + " Fitness: " + trainFitness);
+		System.out.println("Series: " + strategyTestSeriesName + " Fitness: " + testFitness);
 
 	}
-
-	public double runOnePoint(int tickNum, String trainOrTest,
-			TimeSeries series, RollingFunctionApproxToRules rm) {
-//		TimeTick today = new TimeTick();
+	
+	public double runOnePoint(int tickNum, RollingFunctionApproxToRules rm) {
 		double fitness = 1;
 		double inputs[];
 		double outputs[] = new double[1];
 
+		
 		Rule.RecType rec = Rule.RecType.DONOTHING;
 
-		if (hist.getTrainTest(tickNum) == trainOrTest) {
 			inputs = ig.generateInput(hist, tickNum);
-//			setTodaysValues(hist, today, stock, tickNum);
-			
+
 			outputs[0] = tickNum < (hist.getLength() - 1) ? (hist
 					.getAdjClose(tickNum + 1) / hist.getAdjClose(tickNum)) * 100
 					: 100.0;
 
 			rec = rm.getRuleset().getRecommendation(inputs, outputs);
 			fitness = evalPrediction(hist, tickNum, rec);
-					}
-
 		return fitness;
+	
 	}
 }
