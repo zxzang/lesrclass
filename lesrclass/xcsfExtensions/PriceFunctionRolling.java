@@ -6,7 +6,7 @@ import xcsf.XCSFUtils;
 import LESRData.PriceData;
 import LESRData.Stock;
 
-public class PriceFunction extends SimpleFunction {
+public class PriceFunctionRolling extends SimpleFunction {
 	String stockName;
 	String fileName;
 	Stock stock;
@@ -14,9 +14,12 @@ public class PriceFunction extends SimpleFunction {
 	int dim;
 	InputGenerator ig;
 	int currtick;
+	int rollperiod;
+	int start;
 	
-	public PriceFunction(double scale, double modifier, double noiseDeviation,
-			int dim, String fileName) {
+	public void setCurr(int currIn){currtick = currIn;}
+	public PriceFunctionRolling(double scale, double modifier, double noiseDeviation,
+			int dim, String fileName, int rollperiod) {
 		super(scale, modifier, noiseDeviation, dim);
 		currtick = 0;
 		this.dim = dim;
@@ -24,6 +27,8 @@ public class PriceFunction extends SimpleFunction {
 		this.fileName = fileName;
 		stockName = "SP500";
 		hist = new PriceData(stockName, fileName);
+		this.rollperiod = rollperiod;
+		start = 0;
 	}
 
 	@Override
@@ -38,15 +43,18 @@ public class PriceFunction extends SimpleFunction {
 		return value;
 	}
 
+	public void setRollperiod(int rollPeriodIn) {rollperiod = rollPeriodIn;}
 	
 	public void setInputGenerator(InputGenerator ig){
 		this.ig=ig;
 	}
 	
+	public void setStart(int startIn){start = startIn;}
+	
 	protected void generateInput() {
 		Boolean trainSet = false;;
 		do {
-			currtick = (int) (XCSFUtils.Random.uniRand() * (hist.getLength() - 1));
+			currtick = (int) (XCSFUtils.Random.uniRand() * rollperiod) + start;
 			if(hist.getTrainTest(currtick) == "train")
 				{
 				trainSet = true;
@@ -54,5 +62,5 @@ public class PriceFunction extends SimpleFunction {
 			}
 		} while (trainSet == false);
 	}
-	
+	public int getHistLength(){return hist.getLength();}
 }
