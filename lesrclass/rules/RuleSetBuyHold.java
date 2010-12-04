@@ -16,5 +16,9 @@ public class RuleSetBuyHold implements RuleSet {
 		// TODO Auto-generated method stub
 		return RecType.LONG;
 	}
+@Override
+	public int getRuleSetLength(){
+		return 0;
+}
 
 }

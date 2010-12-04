@@ -16,5 +16,9 @@ public class RuleSetDoNothing implements RuleSet {
 		// TODO Auto-generated method stub
 		return RecType.DONOTHING;
 	}
+@Override
+	public int getRuleSetLength(){
+		return 0;
+}
 
 }

@@ -20,6 +20,12 @@ public class RollingFunctionApproxToRules{
 		parseRulesFromPopulation();
 	}
 
+	public void setRollingPopTracker(RollingPopTracker rpt){
+		this.rpt = rpt;
+		pop = rpt.getFinalPop();
+		parseRulesFromPopulation();
+	
+	}
 	public void parseRulesFromPopulation(double[] inputs, double[] outputs) {
 		ruleset = new RuleSetXCSFImpl(pop);
 		RecType rec = ruleset.getRecommendation(inputs, outputs);
