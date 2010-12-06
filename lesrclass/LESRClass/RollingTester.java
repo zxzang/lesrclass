@@ -79,24 +79,24 @@ public class RollingTester {
 		 * .createSeries(strategyTestSeriesName); strategyTestSeries =
 		 * runRollingSeries(ruleset, "test", strategyTestSeriesName);
 		 */
+
 		RuleSet buyHoldRules = new RuleSetBuyHold();
-		String buyHoldTrainSeriesName = "Buy and Hold With Training Data";
-		TimeSeries buyHoldTrainSeries = outChart
-				.createSeries(buyHoldTrainSeriesName);
-		buyHoldTrainSeries = runSeries(buyHoldRules, "train",
-				buyHoldTrainSeriesName);
+		String buyHoldSeriesName = "Buy and Hold";
+		TimeSeries buyHoldSeries = outChart
+				.createSeries(buyHoldSeriesName);
+		buyHoldSeries = runSeries(buyHoldRules, buyHoldSeriesName);
 
-		String buyHoldTestSeriesName = "Buy and Hold With Test Data";
-		TimeSeries buyHoldTestSeries = outChart
-				.createSeries(buyHoldTestSeriesName);
+//		String buyHoldTestSeriesName = "Buy and Hold With Test Data";
+//		TimeSeries buyHoldTestSeries = outChart
+//				.createSeries(buyHoldTestSeriesName);
 
-		buyHoldTestSeries = runSeries(new RuleSetBuyHold(), "test",
-				buyHoldTestSeriesName);
+//		buyHoldTestSeries = runSeries(new RuleSetBuyHold(), "test",
+//				buyHoldTestSeriesName);
 
 		// seriesList.add(strategyTestSeries);
 		seriesList.add(strategyTrainSeries);
-		seriesList.add(buyHoldTestSeries);
-		seriesList.add(buyHoldTrainSeries);
+		seriesList.add(buyHoldSeries);
+//		seriesList.add(buyHoldTrainSeries);
 
 		return seriesList;
 	}
@@ -118,8 +118,7 @@ public class RollingTester {
 		return returnVal;
 	}
 
-	private TimeSeries runSeries(RuleSet rules, String trainOrTest,
-			String seriesName) {
+	private TimeSeries runSeries(RuleSet rules, String seriesName) {
 
 		fitness = 1;
 		TimeSeries series = new TimeSeries(seriesName);
@@ -133,7 +132,7 @@ public class RollingTester {
 		for (int a = 1; a < maxlength; a++) {
 
 			inputs = ig.generateInput(hist, today.getTickNum());
-			if (hist.getTrainTest(a) == trainOrTest) {
+//			if (hist.getTrainTest(a) == trainOrTest) {
 				setTodaysValues(hist, today, stock, a);
 
 				int currtick = today.getTickNum();
@@ -149,7 +148,7 @@ public class RollingTester {
 				double tomorrow = (a < (hist.getLength() - 1) ? hist
 						.getAdjClose(a + 1) : hist.getAdjClose(a));
 				outChart.addPoint(series, date, fitness);
-			}
+//			}
 		}
 		System.out.println("Series: " + seriesName + " Fitness: " + fitness);
 		return series;

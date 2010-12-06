@@ -12,20 +12,22 @@ import xcsfExtensions.PriceFunction;
 public class LESRClass {
 
 	public static void main(String[] args) {
-		// 17 best so far for non-adaptive
+		// 17 and 18 best so far for non-rolling
 		InputGenerator ig = new InputGenerator18();
 
-		// int dim = ig.getDim();
-
 		String fileName = "sp62-10SplitII.prn";
-		runNonRolling(fileName, ig);
-//		runRolling(fileName, ig);
+//		runNonRolling(fileName, ig);
+
+		
+		// 18 best so far for rolling
+		int rollperiod = 250;
+		int maxlength = 2000;
+		runRolling(fileName, ig, rollperiod, maxlength);
 
 	}
 	
-	public static void runRolling(String fileName, InputGenerator ig){
-		int rollperiod = 250;
-		RollingTesterSplit rt = new RollingTesterSplit(fileName, ig, rollperiod);
+	public static void runRolling(String fileName, InputGenerator ig, int rollperiod, int maxlength){
+		RollingTesterSplit rt = new RollingTesterSplit(fileName, ig, rollperiod, maxlength);
 		rt.test();
 	}
 
