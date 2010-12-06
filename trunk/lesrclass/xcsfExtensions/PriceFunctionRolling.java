@@ -16,10 +16,13 @@ public class PriceFunctionRolling extends SimpleFunction {
 	int currtick;
 	int rollperiod;
 	int start;
-	
-	public void setCurr(int currIn){currtick = currIn;}
-	public PriceFunctionRolling(double scale, double modifier, double noiseDeviation,
-			int dim, String fileName, int rollperiod) {
+
+	public void setCurr(int currIn) {
+		currtick = currIn;
+	}
+
+	public PriceFunctionRolling(double scale, double modifier,
+			double noiseDeviation, int dim, String fileName, int rollperiod) {
 		super(scale, modifier, noiseDeviation, dim);
 		currtick = 0;
 		this.dim = dim;
@@ -34,33 +37,33 @@ public class PriceFunctionRolling extends SimpleFunction {
 	@Override
 	protected double evaluate() {
 		Double value = 0D;
-			
-		if (currtick < (hist.getLength() - 2)){
-			value = (hist.getAdjClose(currtick + 1))/(hist.getAdjClose(currtick))* 100;
-//			value = value * (currtick / (hist.getLength()-1));	
-		}	
-			else value = 100.0;
+
+		if (currtick < (hist.getLength() - 2)) {
+			value = (hist.getAdjClose(currtick + 1))
+					/ (hist.getAdjClose(currtick)) * 100;
+		} else
+			value = 100.0;
 		return value;
 	}
 
-	public void setRollperiod(int rollPeriodIn) {rollperiod = rollPeriodIn;}
-	
-	public void setInputGenerator(InputGenerator ig){
-		this.ig=ig;
+	public void setRollperiod(int rollPeriodIn) {
+		rollperiod = rollPeriodIn;
 	}
-	
-	public void setStart(int startIn){start = startIn;}
-	
+
+	public void setInputGenerator(InputGenerator ig) {
+		this.ig = ig;
+	}
+
+	public void setStart(int startIn) {
+		start = startIn;
+	}
+
 	protected void generateInput() {
-		Boolean trainSet = false;;
-		do {
-			currtick = (int) (XCSFUtils.Random.uniRand() * rollperiod) + start;
-			if(hist.getTrainTest(currtick) == "train")
-				{
-				trainSet = true;
-				input = ig.generateInput(hist, currtick);
-			}
-		} while (trainSet == false);
+		currtick = (int) (XCSFUtils.Random.uniRand() * rollperiod) + start;
+		input = ig.generateInput(hist, currtick);
 	}
-	public int getHistLength(){return hist.getLength();}
+
+	public int getHistLength() {
+		return hist.getLength();
+	}
 }
