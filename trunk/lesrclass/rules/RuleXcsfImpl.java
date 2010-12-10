@@ -46,21 +46,8 @@ public class RuleXcsfImpl extends Rule {
 	}
 */
 	public double getPrediction(StateDescriptor state){
-	
-		classifier.predict(state);
-		Prediction prediction = classifier.getPrediction();
-		double[] input = state.getPredictionInput();
-		 
-		double[] centeredInput = new double[input.length];
-		for(int i = 0; i < centeredInput.length; i++){
-			centeredInput[i] = input[i] - classifier.getCondition().getCenter()[i];
-		}
-		
-		double[] predChange = prediction.predict(centeredInput);
-//		double[] predChange = prediction.predict(input);
-	
-		double predNum = predChange[0] - 100;
-		
+		double[] predArray = classifier.predict(state);
+		double predNum = predArray[0] - 100;
 		return predNum;
 	}
 
