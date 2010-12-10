@@ -1,7 +1,7 @@
 package LESRClass;
 
 import inputGenerators.InputGenerator;
-import inputGenerators.InputGenerator18;
+import inputGenerators.*;
 import rulemakers.FunctionApproxToRules;
 import rulemakers.XcsfRlsFunctionApproxToRulesImpl;
 import xcsf.XCSF;
@@ -13,18 +13,19 @@ public class LESRClass {
 
 	public static void main(String[] args) {
 		// 17 and 18 best so far for non-rolling
-		InputGenerator ig = new InputGenerator18();
+		InputGenerator ig = new InputGenerator17();
 
 		String fileName = "sp62-10SplitII.prn";
-//		runNonRolling(fileName, ig);
-
+		runNonRolling(fileName, ig);
+//		testOnlyNonRolling(fileName, ig);
 		
 		// 18 best so far for rolling
 		int rollperiod = 250;
-		int maxlength = 2000;
-		runRolling(fileName, ig, rollperiod, maxlength);
+		int maxlength = 5000;
+//		runRolling(fileName, ig, rollperiod, maxlength);
 
 	}
+
 	
 	public static void runRolling(String fileName, InputGenerator ig, int rollperiod, int maxlength){
 		RollingTesterSplit rt = new RollingTesterSplit(fileName, ig, rollperiod, maxlength);
@@ -44,6 +45,15 @@ public class LESRClass {
 
 		xcsf.runExperiments();
 
+		FunctionApproxToRules rulemaker = new XcsfRlsFunctionApproxToRulesImpl();
+		rulemaker.parseRulesFromPopulation();
+
+		InvestorTester test = new InvestorTesterXcsfImpl(ig, fileName);
+		test.test(rulemaker.getRuleset());
+	}
+	
+	public static void testOnlyNonRolling(String fileName, InputGenerator ig) {
+		
 		FunctionApproxToRules rulemaker = new XcsfRlsFunctionApproxToRulesImpl();
 		rulemaker.parseRulesFromPopulation();
 

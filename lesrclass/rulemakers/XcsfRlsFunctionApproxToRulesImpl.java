@@ -47,7 +47,6 @@ public class XcsfRlsFunctionApproxToRulesImpl implements FunctionApproxToRules {
 	public void readSource(File xcsfOutputFile){
 		
 			Population tempPop = new Population();
-			pop = new Population();
 			try {
 				pop = tempPop.parse(xcsfOutputFile);
 			} catch (IllegalArgumentException e) {
@@ -96,7 +95,7 @@ public class XcsfRlsFunctionApproxToRulesImpl implements FunctionApproxToRules {
 
 	public void parseRulesFromPopulation(double[] inputs, double[] outputs) {
 		ruleset = new RuleSetXCSFImpl(pop);
-		RecType rec = ruleset.getRecommendation(inputs, outputs);
+//		RecType rec = ruleset.getRecommendation(inputs, outputs);
 		
 		
 	}
