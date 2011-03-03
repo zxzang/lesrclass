@@ -4,7 +4,7 @@ package Charting;
 // data point used in the output array
 public class OutputPoint {
 	String date;	
-
+//test
 	double closePrice;
 
 	double[] investorWealth;
