@@ -1,6 +1,5 @@
 package Charting;
 
-import LESRData.Investor;
 
 // data point used in the output array
 public class OutputPoint {
@@ -10,15 +9,9 @@ public class OutputPoint {
 
 	double[] investorWealth;
 	
-	public void setValues(String dateIn, double closePriceIn, Investor[] investors)
+	public void setValues()
 	{
-		date = dateIn;
-		closePrice = closePriceIn;
-		investorWealth = new double[investors.length];
-		for(int counter = 0; counter < investors.length; counter++){	
-			investorWealth[counter] = investors[counter].getWealth(closePrice);
-					
-		}
+		
 	}
 	
 	public double getPrice(){
